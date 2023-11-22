@@ -45,8 +45,8 @@ class AppTheme {
       //     onSecondary: AppColors.blackText,
       //     error: Colors.red,
       //     onError: Colors.red,
-      //     background: background,
-      //     onBackground: onBackground,
+      //     background: Colors.white,
+      //     onBackground: Colors.black,
       //     surface: surface,
       //     onSurface: onSurface
       // ),

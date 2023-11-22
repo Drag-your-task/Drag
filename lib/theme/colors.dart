@@ -17,5 +17,4 @@ class AppColors {
   static const Color secondaryButtonBackground = Color(0xFFFFF3F1); // 예시 색상
 
 
-
 }

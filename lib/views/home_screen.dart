@@ -1,4 +1,5 @@
 import 'package:drag/views/profile_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../theme/colors.dart';
 import 'calender_screen.dart';
@@ -40,7 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(_title),
       ),
-      body: _getPage(_selectedIndex), // 현재 선택된 탭의 페이지를 표시합니다.
+      body: Container(
+          color: _selectedIndex == 1 ? Colors.white:Colors.grey[100],
+          child: _getPage(_selectedIndex),
+
+      ), // 현재 선택된 탭의 페이지를 표시합니다.
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // FAB 클릭 이벤트
@@ -55,14 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             _buildTabItem(
-              icon: Icons.calendar_today,
-              text: 'Calendar',
+              icon: CupertinoIcons.calendar,
+              text: 'calendar',
               index: 0,
             ),
             SizedBox(width: 48), // FloatingActionButton의 공간을 비워두기 위함
             _buildTabItem(
-              icon: Icons.person,
-              text: 'Profile',
+              icon: CupertinoIcons.person,
+              text: 'profile',
               index: 1,
             ),
           ],
@@ -83,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(icon, color: color),
+          Icon(icon, color: color,size:20),
           Text(text, style: TextStyle(color: color)),
         ],
       ),
