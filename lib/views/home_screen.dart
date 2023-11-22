@@ -2,7 +2,7 @@ import 'package:drag/views/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../theme/colors.dart';
-import 'calender_screen.dart';
+import 'calendar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0; // 현재 선택된 탭의 인덱스
-  String _title = "Calender"; // 현재 선택된 탭의 title
+  String _title = "Calendar"; // 현재 선택된 탭의 title
 
   // 각 탭 인덱스에 따라 페이지를 반환합니다.
   Widget _getPage(int index) {
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _title = index == 0 ? "Calender" : "Profile";
+      _title = index == 0 ? "Calendar" : "Profile";
     });
   }
 
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required String text,
     required int index,
   }) {
-    Color color = _selectedIndex == index ? AppColors.primary : Colors.grey; // AppColors를 사용하여 선택된 탭 색상 지정
+    Color color = _selectedIndex == index ? AppColors.primary : Colors.black; // AppColors를 사용하여 선택된 탭 색상 지정
 
     return InkWell(
       onTap: () => _onItemTapped(index),

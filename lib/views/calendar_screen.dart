@@ -6,6 +6,6 @@ class CalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("calender"),);
+    return Center(child: Text("calendar"),);
   }
 }
