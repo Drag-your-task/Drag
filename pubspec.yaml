@@ -19,6 +19,7 @@ dependencies:
   firebase_storage: ^11.5.2
   firebase_auth: ^4.14.1
   google_sign_in: ^6.1.6
+  table_calendar: ^3.0.9
 
 flutter_icons:
   android: true
