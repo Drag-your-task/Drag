@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../theme/colors.dart';
 import 'calendar_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget{
 
   HomeScreen();
 
@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0; // 현재 선택된 탭의 인덱스
-  String _title = "Calendar"; // 현재 선택된 탭의 title
+  //String _title = "Calendar"; // 현재 선택된 탭의 title
 
   // 각 탭 인덱스에 따라 페이지를 반환합니다.
   Widget _getPage(int index) {
@@ -31,15 +31,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _title = index == 0 ? "Calendar" : "Profile";
+      // _title = index == 0 ? "Calendar" : "Profile";
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(35),
+        child: AppBar(
+          leading: Image.asset("assets/icons/grab_icon/grab_app_icon.png", height: 10,),
+          actions: [
+            IconButton(
+              onPressed: () {  },
+              icon: Icon(CupertinoIcons.bell, size: 20,),
+            ),
+            IconButton(
+              onPressed: () {  },
+              icon: Icon(CupertinoIcons.ellipsis_circle, size: 20,),
+            ),
+          ],
+        ),
       ),
       body: Container(
           color: _selectedIndex == 1 ? Colors.white:Colors.grey[100],
