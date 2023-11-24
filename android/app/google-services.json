@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "201866294717",
+    "project_id": "drag-73ff6",
+    "storage_bucket": "drag-73ff6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201866294717:android:7befb14e3cff1be32c4ed4",
+        "android_client_info": {
+          "package_name": "com.example.drag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201866294717-1i22jdjripr8orjhls2sbd37m3gol28j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2rIZa_nKuw8P73HM2IVyhKD5PJniXiQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201866294717-1i22jdjripr8orjhls2sbd37m3gol28j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "201866294717-vjh03d1srn8l170ba793srsi2uttor7c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.drag"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
