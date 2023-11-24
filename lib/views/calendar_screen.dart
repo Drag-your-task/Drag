@@ -1,5 +1,6 @@
 import 'package:drag/theme/colors.dart';
 import 'package:drag/views/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -98,6 +99,86 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 );
               })),
         ),
+
+
+        // Row(
+        //   children: [
+        //
+        //   ],
+        // ),
+        SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height - 500,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10, // 항목의 수를 설정합니다.
+                    itemBuilder: (context, index) {
+
+                      return Card(
+                        color: Colors.white,
+                        elevation: 0.3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('09:30 ~ 11:15',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                      Text('모바일 앱 개발', style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                    ],
+                                  ),
+                                  RotatedBox(
+                                    quarterTurns: 1, // 90도 회전
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Icon(CupertinoIcons.ellipsis, color: AppColors.primary,),
+                                      onPressed: () {
+                                        // 버튼이 눌렸을 때 수행할 동작
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(alignment:Alignment.centerRight, child: Text('NTH ')),
+                            ],
+                          ),
+                        ),
+                      );
+
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10, // 항목의 수를 설정합니다.
+                    itemBuilder: (context, index) {
+                      // 홀수 인덱스만 표시합니다.
+                      return index % 2 != 0 ? ListTile(title: Text('오른쪽 항목 $index')) : Container();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+
+
+
+
       ],
     );
   }
