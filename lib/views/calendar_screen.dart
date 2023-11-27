@@ -155,8 +155,52 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 child: ListView.builder(
                   itemCount: 10, // 항목의 수를 설정합니다.
                   itemBuilder: (context, index) {
-                    // 홀수 인덱스만 표시합니다.
-                    return index % 2 != 0 ? ListTile(title: Text('오른쪽 항목 $index')) : Container();
+                    return Card(
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      color: Colors.white,
+                      elevation: 0.3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset("assets/img/checked.png", width: 20,),
+                                SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('PARD iOS 과제',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    Text('~ 2023.11.23 23:59', style: TextStyle(
+                                      fontSize: 10,
+                                      //fontWeight: FontWeight.bold,
+                                    ),),
+                                  ],
+                                ),
+                                RotatedBox(
+                                  quarterTurns: 1, // 90도 회전
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Icon(CupertinoIcons.ellipsis, color: AppColors.primary,),
+                                    onPressed: () {
+                                      // 버튼이 눌렸을 때 수행할 동작
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),

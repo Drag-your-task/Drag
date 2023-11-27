@@ -1,4 +1,5 @@
 import 'package:drag/views/profile_screen.dart';
+import 'package:drag/views/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../theme/colors.dart';
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return CalendarScreen(); // CalendarPage 위젯
       case 1:
-        return ProfileScreen(); // ProfilePage 위젯
+        return test(); // ProfilePage 위젯
       default:
         return CalendarScreen(); // 기본 페이지
     }

@@ -20,6 +20,7 @@ dependencies:
   firebase_auth: ^4.14.1
   google_sign_in: ^6.1.6
   table_calendar: ^3.0.9
+  reorderable_grid_view: ^2.2.8
 
 flutter_icons:
   android: true
@@ -39,6 +40,7 @@ flutter:
 
   assets:
     - assets/img/google.png
+    - assets/img/
     - assets/icons/grab_icon/
     - assets/icons/
   #   - images/a_dot_ham.jpeg
