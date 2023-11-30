@@ -1,5 +1,6 @@
 import 'package:drag/theme/app_theme.dart';
 import 'package:drag/viewmodels/auth_viewmodel.dart';
+import 'package:drag/viewmodels/task_viewmodel.dart';
 import 'package:drag/views/auth_screen.dart';
 import 'package:drag/views/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_)=> AuthViewModel()),
+        ChangeNotifierProvider(create: (_)=> TaskViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

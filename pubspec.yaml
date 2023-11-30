@@ -21,6 +21,8 @@ dependencies:
   google_sign_in: ^6.1.6
   table_calendar: ^3.0.9
   reorderable_grid_view: ^2.2.8
+  cloud_firestore: ^4.13.3
+  intl: ^0.18.1
 
 flutter_icons:
   android: true
