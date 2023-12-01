@@ -55,6 +55,11 @@ class TaskService {
     }
   }
 
+  Future<void> updateCheck(String doc_id, bool status) async {
+    await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('task').doc(doc_id).update({
+      'is_checked' : !status,
+    });
+  }
 
 
 }
