@@ -298,7 +298,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             if (isInDraggableList) {
                               print("move");
                               // 같은 드래그 가능한 리스트 내에서 위치 변경
-                              taskViewModel.moveTaskToList(receivedTaskId, true);
+                              taskViewModel.moveTaskToList(receivedTaskId,index, true);
                             } else if (isInFixedList) {
                               print("no");
                               // 고정된 리스트에서 드래그 가능한 리스트로 아이템 이동
@@ -344,7 +344,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               taskViewModel.reorderTask(receivedTaskId, index, false);
                             } else if (isInFixedList) {
                               print("move");
-                              taskViewModel.moveTaskToList(receivedTaskId, false);
+                              taskViewModel.moveTaskToList(receivedTaskId,index, false);
                               // 고정된 리스트에서 드래그 가능한 리스트로 아이템 이동
                               //taskViewModel.moveTaskToList(receivedTaskId, true);
                             }

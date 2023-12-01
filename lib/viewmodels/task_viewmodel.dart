@@ -76,13 +76,13 @@ class TaskViewModel with ChangeNotifier {
   }
 
   // 다른 리스트로 아이템 이동
-  void moveTaskToList(String taskId, bool toFixedList) {
+  void moveTaskToList(String taskId,int newIndex, bool toFixedList) {
     if (toFixedList) {
       draggable_list.remove(taskId);
-      fixed_list.add(taskId);
+      fixed_list.insert(newIndex,taskId);
     } else {
       fixed_list.remove(taskId);
-      draggable_list.add(taskId);
+      draggable_list.insert(newIndex,taskId);
     }
     print(draggable_list);
     print(fixed_list);
