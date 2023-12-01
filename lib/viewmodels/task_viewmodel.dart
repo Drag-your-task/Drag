@@ -53,15 +53,10 @@ class TaskViewModel with ChangeNotifier {
 
 
 
-  void toggleCheck(TaskModel task, int idx){
-    if(tasks[idx].is_checked == true){
-      tasks[idx].is_checked = false;
-    }
-    else{
-      tasks[idx].is_checked = true;
-    }
+  void toggleCheck(TaskModel task){
     taskService.updateCheck(task.doc_id, task.is_checked!);
-    notifyListeners();
+    loadTasks();
+    //notifyListeners();
   }
 
 
@@ -89,21 +84,6 @@ class TaskViewModel with ChangeNotifier {
     notifyListeners();
     // Firestore에서도 이동 반영
   }
-
-  // void moveTaskToList(String taskId, bool toFixedList) {
-  //   if (toFixedList) {
-  //     draggable_list.remove(taskId); // 오른쪽 리스트에서 제거
-  //     if (!fixed_list.contains(taskId)) {
-  //       fixed_list.add(taskId); // 왼쪽 리스트에 추가
-  //     }
-  //   } else {
-  //     fixed_list.remove(taskId); // 왼쪽 리스트에서 제거
-  //     if (!draggable_list.contains(taskId)) {
-  //       draggable_list.add(taskId); // 오른쪽 리스트에 추가
-  //     }
-  //   }
-  //   notifyListeners(); // UI 업데이트
-  // }
 
 
 }

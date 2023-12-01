@@ -18,6 +18,7 @@ class TaskService {
     // print(querySnapshot.docs.length);
     return querySnapshot.docs.map((doc){
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      print(data);
       return TaskModel(
         doc_id: data['doc_id'],
         is_fixed: data['is_fixed'],
@@ -59,6 +60,14 @@ class TaskService {
     await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('task').doc(doc_id).update({
       'is_checked' : !status,
     });
+  }
+
+  void updateDraggableList(){
+
+  }
+
+  void updateFixedList(){
+
   }
 
 

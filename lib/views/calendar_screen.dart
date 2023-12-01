@@ -1,7 +1,6 @@
 import 'package:drag/models/task_model.dart';
 import 'package:drag/theme/colors.dart';
 import 'package:drag/viewmodels/task_viewmodel.dart';
-import 'package:drag/views/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -105,15 +104,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
         }));
   }
 
-  Widget fixed_card(TaskModel task) {
+  Widget fixed_card(BuildContext context, TaskModel task, int idx) {
+    final taskViewModel = Provider.of<TaskViewModel>(context);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       color: Colors.white,
       elevation: 0.3,
-      margin: EdgeInsets.fromLTRB(6, 5, 6, 5),
-      //elevation: 0.3,
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -122,27 +121,47 @@ class _CalendarScreenState extends State<CalendarScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Text(
-                      task?.fixed_time.toString() ?? '',
-                      style: TextStyle(
-                        fontSize: 10,
+                    InkWell(
+                      child: Image.asset(
+                        (task.is_checked == true)
+                            ? "assets/img/checked.png" : "assets/img/notchecked.png",
+                        width: 20,
                       ),
+                      onTap: () {
+                        taskViewModel.toggleCheck(task);
+                      },
                     ),
-                    Text(
-                      task?.task_name.toString() ?? '',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    SizedBox(
+                      width: 15,
                     ),
-                    Text(
-                      task?.location.toString() ?? '',
-                      style: TextStyle(
-                        fontSize: 10,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          task?.fixed_time.toString() ?? '',
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            task?.task_name.toString() ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          width: MediaQuery.of(context).size.width / 2 - 87,
+                        ),
+                        Text(
+                          task?.location.toString() ?? '',
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -171,7 +190,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      margin: EdgeInsets.fromLTRB(6, 5, 6, 5),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       //color: AppColors.secondary,
       color: Colors.white,
       elevation: 0.3,
@@ -183,44 +202,50 @@ class _CalendarScreenState extends State<CalendarScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InkWell(
-                  child: Image.asset(
-                    (task?.is_checked == true)
-                        ? "assets/img/notchecked.png"
-                        : "assets/img/checked.png",
-                    width: 20,
-                  ),
-                  onTap: () {
-                    taskViewModel.toggleCheck(task, idx);
-                  },
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                Row(
                   children: [
-                    Container(
-                      child: Text(
-                        task?.task_name.toString() ?? '',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    InkWell(
+                      child: Image.asset(
+                        (task?.is_checked == true)
+                            ? "assets/img/checked.png" : "assets/img/notchecked.png",
+                        width: 20,
                       ),
-                      width: MediaQuery.of(context).size.width / 2 - 87,
+                      onTap: () {
+                        taskViewModel.toggleCheck(task);
+                      },
                     ),
-                    Text(
-                      '~ ' + formatDateTime(task!.end_date!),
-                      style: TextStyle(
-                        fontSize: 10,
-                        //fontWeight: FontWeight.bold,
-                      ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            task?.task_name.toString() ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          width: MediaQuery.of(context).size.width / 2 - 87,
+                        ),
+                        Text(
+                          '~ ' + formatDateTime(task!.end_date!),
+                          style: TextStyle(
+                            fontSize: 10,
+                            //fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
+
+
                 InkWell(
                   child: RotatedBox(
                     quarterTurns: 1, // 90도 회전
@@ -247,135 +272,102 @@ class _CalendarScreenState extends State<CalendarScreen> {
       children: [
         Container(color: Colors.white, child: _buildCalendar()),
         SizedBox(
-          height: 10,
+          height: 5,
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              children: [
-                Expanded(
-                  // child: DragTarget<TaskModel>(
-                  //     onAccept: (receivedTask) {},
-                  //     builder: (context, candidateData, rejectedData) {
-                  //       return ListView.builder(
-                  //         itemCount: taskViewModel.fixed_list.length,
-                  //         itemBuilder: (context, index) {
-                  //           int idx = taskViewModel
-                  //               .findTask(taskViewModel.fixed_list[index]);
-                  //           TaskModel task = taskViewModel.tasks[idx];
-                  //           return Draggable<TaskModel>(
-                  //             data: task,
-                  //             feedback: task.is_fixed
-                  //                 ? fixed_card(task)
-                  //                 : draggable_card(context, task, idx),
-                  //             // 드래그하는 동안 보여줄 위젯
-                  //             childWhenDragging: Opacity(
-                  //               opacity: 0.5,
-                  //               child: task.is_fixed
-                  //                   ? fixed_card(task)
-                  //                   : draggable_card(context, task,
-                  //                       idx), // 드래그할 때 원래 위치에 보여줄 위젯
-                  //             ),
-                  //             child: task.is_fixed
-                  //                 ? fixed_card(task)
-                  //                 : draggable_card(context, task, idx),
-                  //           );
-                  //         },
-                  //       );
-                  //     }),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    itemCount: taskViewModel.fixed_list.length,
+                    // 항목의 수를 설정합니다.
+                    itemBuilder: (context, index) {
+                      return DragTarget<String>(
+                        onAccept: (receivedTaskId) {
+                          bool isInFixedList = taskViewModel.fixed_list.contains(receivedTaskId);
+                          bool isInDraggableList = taskViewModel.draggable_list.contains(receivedTaskId);
 
-                  child: ListView.builder(
-                      itemCount: taskViewModel.fixed_list.length,
-                      // 항목의 수를 설정합니다.
-                      itemBuilder: (context, index) {
-                        return DragTarget<String>(
-                          onAccept: (receivedTaskId) {
-                            bool isInFixedList = taskViewModel.fixed_list.contains(receivedTaskId);
-                            bool isInDraggableList = taskViewModel.draggable_list.contains(receivedTaskId);
+                          if (isInDraggableList) {
+                            // 같은 드래그 가능한 리스트 내에서 위치 변경
+                            taskViewModel.moveTaskToList(receivedTaskId,index, true);
+                          } else if (isInFixedList) {
+                            // 고정된 리스트에서 드래그 가능한 리스트로 아이템 이동
+                            taskViewModel.reorderTask(receivedTaskId, index, true);
 
-                            int idx = taskViewModel.findTask(taskViewModel.fixed_list[index]);
-                            if (isInDraggableList) {
-                              print("move");
-                              // 같은 드래그 가능한 리스트 내에서 위치 변경
-                              taskViewModel.moveTaskToList(receivedTaskId,index, true);
-                            } else if (isInFixedList) {
-                              print("no");
-                              // 고정된 리스트에서 드래그 가능한 리스트로 아이템 이동
-                              taskViewModel.reorderTask(receivedTaskId, index, true);
+                          }
 
-                            }
-                            //taskViewModel.reorderTask(receivedTaskId, index, true);
-
-
-                          },
-                          builder: (context, candidateData, rejectedData) {
-                            int idx = taskViewModel.findTask(taskViewModel.fixed_list[index]);
-                            TaskModel task = taskViewModel.tasks[idx];
-                            String taskId = taskViewModel.fixed_list[index];
-                            return Draggable<String>(
-                              data: taskId,
-                              feedback: taskViewModel.tasks[idx].is_fixed ? fixed_card(task):draggable_card(context, task, idx),
-                              // 드래그하는 동안 보여줄 위젯
-                              childWhenDragging: Opacity(
-                                opacity: 0.5,
-                                child: taskViewModel.tasks[idx].is_fixed ? fixed_card(task):draggable_card(context, task, idx), // 드래그할 때 원래 위치에 보여줄 위젯
-                              ),
-                              child: taskViewModel.tasks[idx].is_fixed ? fixed_card(task):draggable_card(context, task, idx),
-                            );
-                          },
-                        );
-                      }),
+                        },
+                        builder: (context, candidateData, rejectedData) {
+                          int idx = taskViewModel.findTask(taskViewModel.fixed_list[index]);
+                          TaskModel task = taskViewModel.tasks[idx];
+                          String taskId = taskViewModel.fixed_list[index];
+                          return Draggable<String>(
+                            data: taskId,
+                            feedback: taskViewModel.tasks[idx].is_fixed ? fixed_card(context, task,idx):draggable_card(context, task, idx),
+                            // 드래그하는 동안 보여줄 위젯
+                            childWhenDragging: Opacity(
+                              opacity: 0.5,
+                              child: taskViewModel.tasks[idx].is_fixed ? fixed_card(context, task, idx):draggable_card(context, task, idx), // 드래그할 때 원래 위치에 보여줄 위젯
+                            ),
+                            child: taskViewModel.tasks[idx].is_fixed ? fixed_card(context, task,idx):draggable_card(context, task, idx),
+                          );
+                        },
+                      );
+                    }),
+              ),
+              Container(
+                height: taskViewModel.draggable_list.length == 0 ? 0 : 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                  color: AppColors.primary,
                 ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: taskViewModel.draggable_list.length,
-                      // 항목의 수를 설정합니다.
-                      itemBuilder: (context, index) {
-                        return DragTarget<String>(
-                          onAccept: (receivedTaskId) {
-                            bool isInFixedList = taskViewModel.fixed_list.contains(receivedTaskId);
-                            bool isInDraggableList = taskViewModel.draggable_list.contains(receivedTaskId);
+                child: ListView.builder(
+                    itemCount: taskViewModel.draggable_list.length,
+                    // 항목의 수를 설정합니다.
+                    itemBuilder: (context, index) {
+                      return DragTarget<String>(
+                        onAccept: (receivedTaskId) {
+                          bool isInFixedList = taskViewModel.fixed_list.contains(receivedTaskId);
+                          bool isInDraggableList = taskViewModel.draggable_list.contains(receivedTaskId);
 
-                            int idx = taskViewModel.findTask(taskViewModel.draggable_list[index]);
-                            if (isInDraggableList) {
+                          if (isInDraggableList) {
 
-                              // 같은 드래그 가능한 리스트 내에서 위치 변경
-                              taskViewModel.reorderTask(receivedTaskId, index, false);
-                            } else if (isInFixedList) {
-                              print("move");
-                              taskViewModel.moveTaskToList(receivedTaskId,index, false);
-                              // 고정된 리스트에서 드래그 가능한 리스트로 아이템 이동
-                              //taskViewModel.moveTaskToList(receivedTaskId, true);
-                            }
-                            //taskViewModel.reorderTask(receivedTaskId, index, false);
+                            // 같은 드래그 가능한 리스트 내에서 위치 변경
+                            taskViewModel.reorderTask(receivedTaskId, index, false);
+                          } else if (isInFixedList) {
+                            print("move");
+                            taskViewModel.moveTaskToList(receivedTaskId,index, false);
+                          }
 
-
-                            // 오른쪽 리스트에 아이템을 추가
-
-                          },
-                          builder: (context, candidateData, rejectedData) {
-                            int idx = taskViewModel
-                                .findTask(taskViewModel.draggable_list[index]);
-                            TaskModel task = taskViewModel.tasks[idx];
-                            String taskId = taskViewModel.draggable_list[index];
-                            return Draggable<String>(
-                              data: taskId,
-                              feedback: draggable_card(context, task, idx),
-                              // 드래그하는 동안 보여줄 위젯
-                              childWhenDragging: Opacity(
-                                opacity: 0.5,
-                                child: draggable_card(
-                                    context, task, idx), // 드래그할 때 원래 위치에 보여줄 위젯
-                              ),
-                              child: draggable_card(context, task, idx),
-                            );
-                          },
-                        );
-                      }),
-                )
-              ],
-            ),
+                        },
+                        builder: (context, candidateData, rejectedData) {
+                          int idx = taskViewModel.findTask(taskViewModel.draggable_list[index]);
+                          TaskModel task = taskViewModel.tasks[idx];
+                          String taskId = taskViewModel.draggable_list[index];
+                          return Draggable<String>(
+                            data: taskId,
+                            feedback: draggable_card(context, task, idx),
+                            // 드래그하는 동안 보여줄 위젯
+                            childWhenDragging: Opacity(
+                              opacity: 0.5,
+                              child: draggable_card(
+                                  context, task, idx), // 드래그할 때 원래 위치에 보여줄 위젯
+                            ),
+                            child: draggable_card(context, task, idx),
+                          );
+                        },
+                      );
+                    }),
+              ),
+              // Container(
+              //   color: AppColors.primary,
+              //   height: 10,
+              //     // decoration: BoxDecoration(
+              //     //     borderRadius: BorderRadius.circular(10)
+              //     // )
+              //   //child: Text(''),
+              // )
+            ],
           ),
         )
       ],

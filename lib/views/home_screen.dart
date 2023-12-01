@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           // FAB 클릭 이벤트
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, size: 30,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
