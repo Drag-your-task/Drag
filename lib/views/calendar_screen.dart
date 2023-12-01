@@ -39,7 +39,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           if (!isSameDay(taskViewModel.selectedDay, selectedDay)) {
             // Call `setState()` when updating the selected day
             setState(() {
-              taskViewModel.selectedDay = selectedDay;
+              taskViewModel.set_selectedDay(selectedDay);
               _focusedDay = focusedDay; // update `_focusedDay` here as well
             });
           }
@@ -272,17 +272,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  GlobalKey _key = GlobalKey();
-  // draggable listview의 높이를 가져오는 함수
-  double _getHeight() {
-    final RenderBox renderBox = _key.currentContext?.findRenderObject() as RenderBox;
-    if (renderBox != null) {
-      return renderBox.size.height;
-    }
-    else{
-      return 0;
-    }
-  }
 
 
   @override
@@ -311,11 +300,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               .contains(receivedTaskId);
 
                           if (isInDraggableList) {
-                            // 같은 드래그 가능한 리스트 내에서 위치 변경
                             taskViewModel.moveTaskToList(
                                 receivedTaskId, index, true);
                           } else if (isInFixedList) {
-                            // 고정된 리스트에서 드래그 가능한 리스트로 아이템 이동
+                            // 같은 드래그 가능한 리스트 내에서 위치 변경
                             taskViewModel.reorderTask(
                                 receivedTaskId, index, true);
                           }
@@ -325,7 +313,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               .findTask(taskViewModel.fixed_list[index]);
                           TaskModel task = taskViewModel.tasks[idx];
                           String taskId = taskViewModel.fixed_list[index];
-                          return Draggable<String>(
+                          return LongPressDraggable<String>(
                             data: taskId,
                             feedback: taskViewModel.tasks[idx].is_fixed
                                 ? fixed_card(context, task, idx)
@@ -349,13 +337,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Container(
                 height: taskViewModel.draggable_list.length == 0 ? 0:150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
                   color: AppColors.primary,
+                  //color: Colors.white,
                 ),
                 child: ListView.builder(
-                    key: _key,
                     itemCount: taskViewModel.draggable_list.length,
                     // 항목의 수를 설정합니다.
                     itemBuilder: (context, index) {
@@ -372,9 +358,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             taskViewModel.reorderTask(
                                 receivedTaskId, index, false);
                           } else if (isInFixedList) {
-                            print("move");
-                            taskViewModel.moveTaskToList(
-                                receivedTaskId, index, false);
+                            // taskViewModel.moveTaskToList(
+                            //     receivedTaskId, index, false);
                           }
                         },
                         builder: (context, candidateData, rejectedData) {
@@ -383,7 +368,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           TaskModel task = taskViewModel.tasks[idx];
                           String taskId =
                               taskViewModel.draggable_list[index];
-                          return Draggable<String>(
+                          return LongPressDraggable<String>(
                             data: taskId,
                             feedback: draggable_card(context, task, idx),
                             // 드래그하는 동안 보여줄 위젯

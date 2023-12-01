@@ -68,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        notchMargin: 6.0,
+        //notchMargin: 6.0,
+        height: 58,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Icon(icon, color: color,size:20),
-          Text(text, style: TextStyle(color: color)),
+          Text(text, style: TextStyle(color: color, fontSize: 10),),
         ],
       ),
     );

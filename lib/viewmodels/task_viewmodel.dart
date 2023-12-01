@@ -7,6 +7,12 @@ import '../models/task_model.dart';
 class TaskViewModel with ChangeNotifier {
   DateTime selectedDay = DateTime.now();
 
+  void set_selectedDay(DateTime day){
+    selectedDay = day;
+    _loadInitialData();
+    //notifyListeners();
+  }
+
   String formatDateTime(DateTime dateTime) {
     final DateFormat formatter = DateFormat('yyyy.MM.dd');
     return formatter.format(dateTime);
@@ -16,6 +22,7 @@ class TaskViewModel with ChangeNotifier {
     print("day: "+formatDateTime(selectedDay));
     _loadInitialData();
   }
+
 
   final TaskService taskService = TaskService();
   List<TaskModel> tasks = [];
