@@ -10,8 +10,8 @@ class TaskService {
 
 
 
-  Future<List<TaskModel>> getTasks() async {
-    QuerySnapshot querySnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid)
+  Future<List<TaskModel>> getTasks(String day) async {
+    QuerySnapshot querySnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day)
         .collection('task').get();
     //querySnapshot = await _firestore.collection('/calendar/ 0U1fvPHkXVXUg9AQyduBOGzUim83/task').get();
 
@@ -22,7 +22,7 @@ class TaskService {
       return TaskModel(
         doc_id: data['doc_id'],
         is_fixed: data['is_fixed'],
-        task_name: data['task_name'],
+        task_name: data['task_name'] ?? '',
         location: data['location'],
         fixed_time: data['fixed_time'],
         start_date: data['start_date'] != null ? (data['start_date'] as Timestamp).toDate(): null,
@@ -32,8 +32,8 @@ class TaskService {
     }).toList();
   }
 
-  Future<List<String>> getFixedList() async {
-    DocumentSnapshot docSnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid)
+  Future<List<String>> getFixedList(String day) async {
+    DocumentSnapshot docSnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day)
         .collection('fixed_list').doc('order').get();
 
     if (docSnapshot.exists && docSnapshot.data() != null) {
@@ -44,8 +44,8 @@ class TaskService {
     }
   }
 
-  Future<List<String>> getDraggableList() async {
-    DocumentSnapshot docSnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid)
+  Future<List<String>> getDraggableList(String day) async {
+    DocumentSnapshot docSnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day)
         .collection('draggable_list').doc('order').get();
 
     if (docSnapshot.exists && docSnapshot.data() != null) {
@@ -56,8 +56,8 @@ class TaskService {
     }
   }
 
-  Future<void> updateCheck(String doc_id, bool status) async {
-    await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('task').doc(doc_id).update({
+  Future<void> updateCheck(String doc_id, bool status, String day) async {
+    await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id).update({
       'is_checked' : !status,
     });
   }

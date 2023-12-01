@@ -1,11 +1,19 @@
 import 'package:drag/services/task_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 import '../models/task_model.dart';
 
 class TaskViewModel with ChangeNotifier {
+  DateTime selectedDay = DateTime.now();
+
+  String formatDateTime(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('yyyy.MM.dd');
+    return formatter.format(dateTime);
+  }
 
   TaskViewModel(){
+    print("day: "+formatDateTime(selectedDay));
     _loadInitialData();
   }
 
@@ -22,17 +30,17 @@ class TaskViewModel with ChangeNotifier {
 
 
   Future<void> loadTasks() async {
-    tasks = await taskService.getTasks();
+    tasks = await taskService.getTasks(formatDateTime(selectedDay));
     notifyListeners();
   }
 
   Future<void> loadFixedList() async {
-    fixed_list = await taskService.getFixedList();
+    fixed_list = await taskService.getFixedList(formatDateTime(selectedDay));
     notifyListeners();
   }
 
   Future<void> loadDraggableList() async {
-    draggable_list = await taskService.getDraggableList();
+    draggable_list = await taskService.getDraggableList(formatDateTime(selectedDay));
     notifyListeners();
   }
 
@@ -54,7 +62,7 @@ class TaskViewModel with ChangeNotifier {
 
 
   void toggleCheck(TaskModel task){
-    taskService.updateCheck(task.doc_id, task.is_checked!);
+    taskService.updateCheck(task.doc_id, task.is_checked!,formatDateTime(selectedDay));
     loadTasks();
     //notifyListeners();
   }
