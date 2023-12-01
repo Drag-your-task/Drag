@@ -36,6 +36,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _showBottomSheet(BuildContext context){
+    showModalBottomSheet(
+      isScrollControlled: true,
+        context: context,
+        builder: (BuildContext bc){
+          return Container(
+            color: Colors.white,
+            height: MediaQuery.of(bc).size.height - 200,
+          );
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ), // 현재 선택된 탭의 페이지를 표시합니다.
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // FAB 클릭 이벤트
+          _showBottomSheet(context);
         },
         child: Icon(Icons.add, size: 30,),
       ),
