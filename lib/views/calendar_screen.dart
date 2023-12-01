@@ -143,6 +143,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           task?.fixed_time.toString() ?? '',
                           style: TextStyle(
                             fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
                           ),
                         ),
                         Container(
@@ -150,7 +152,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             task?.task_name.toString() ?? '',
                             style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.normal,
+                              decoration: (task.is_checked == true)
+                                  ? TextDecoration.lineThrough : TextDecoration.none,
                             ),
                           ),
                           width: MediaQuery.of(context).size.width / 2 - 87,
@@ -226,9 +230,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             task?.task_name.toString() ?? '',
                             style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
                               overflow: TextOverflow.ellipsis,
+                              decoration: (task.is_checked == true)
+                                  ? TextDecoration.lineThrough : TextDecoration.none,
                             ),
                           ),
                           width: MediaQuery.of(context).size.width / 2 - 87,

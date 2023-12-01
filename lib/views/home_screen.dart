@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return CalendarScreen(); // CalendarPage 위젯
       case 1:
-        return TwoListViewDragDrop(); // ProfilePage 위젯
+        return ProfileScreen(); // ProfilePage 위젯
       default:
         return CalendarScreen(); // 기본 페이지
     }
