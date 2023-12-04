@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../models/task_model.dart';
+import '../utils/uil.dart';
 
 class TaskViewModel with ChangeNotifier {
   DateTime selectedDay = DateTime.now();
@@ -13,10 +14,6 @@ class TaskViewModel with ChangeNotifier {
     //notifyListeners();
   }
 
-  String formatDateTime(DateTime dateTime) {
-    final DateFormat formatter = DateFormat('yyyy.MM.dd');
-    return formatter.format(dateTime);
-  }
 
   TaskViewModel(){
     print("day: "+formatDateTime(selectedDay));
@@ -98,6 +95,11 @@ class TaskViewModel with ChangeNotifier {
     print(fixed_list);
     notifyListeners();
     // Firestore에서도 이동 반영
+  }
+
+  void addTask(DateTime start_date, DateTime end_date, String task_name){
+    taskService.createTask(start_date, end_date, task_name);
+    notifyListeners();
   }
 
 

@@ -23,6 +23,7 @@ dependencies:
   reorderable_grid_view: ^2.2.8
   cloud_firestore: ^4.13.3
   intl: ^0.18.1
+  flutter_date_range_picker: ^0.0.14
 
 flutter_icons:
   android: true

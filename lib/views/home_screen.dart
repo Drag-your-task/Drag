@@ -1,8 +1,9 @@
 import 'package:drag/views/profile_screen.dart';
-import 'package:drag/views/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import '../theme/colors.dart';
+import 'add_task_screen.dart';
 import 'calendar_screen.dart';
 
 class HomeScreen extends StatefulWidget{
@@ -36,16 +37,40 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showBottomSheet(BuildContext context){
-    showModalBottomSheet(
-      isScrollControlled: true,
-        context: context,
-        builder: (BuildContext bc){
-          return Container(
-            color: Colors.white,
-            height: MediaQuery.of(bc).size.height - 200,
-          );
-        }
+
+
+  // void _showBottomSheet(BuildContext context){
+  //   showModalBottomSheet(
+  //     isScrollControlled: true,
+  //       context: context,
+  //       builder: (BuildContext bc){
+  //         return Container(
+  //           color: Colors.white,
+  //           height: MediaQuery.of(bc).size.height,
+  //           width: MediaQuery.of(bc).size.width,
+  //           child: AddTaskScreen(),
+  //         );
+  //       }
+  //   );
+  // }
+
+
+  void _showCupertinoTimePicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: 200,
+        color: Color.fromARGB(255, 255, 255, 255),
+        child: CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.time,
+          initialDateTime: DateTime.now(),
+          onDateTimeChanged: (val) {
+            setState(() {
+
+            });
+          },
+        ),
+      ),
     );
   }
 
@@ -75,7 +100,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ), // 현재 선택된 탭의 페이지를 표시합니다.
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showBottomSheet(context);
+          //_showBottomSheet(context);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddTaskScreen()),
+          );
+
         },
         child: Icon(Icons.add, size: 30,),
       ),

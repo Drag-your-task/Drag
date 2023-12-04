@@ -2,6 +2,8 @@ import 'package:drag/models/task_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../utils/uil.dart';
+
 
 
 class TaskService {
@@ -68,6 +70,26 @@ class TaskService {
 
   void updateFixedList(){
 
+  }
+
+  Future<void> createTask(DateTime start_date, DateTime end_date, String task_name) async {
+    int differenceInDays = end_date.difference(start_date).inDays;
+
+
+    for(int i=0; i<=differenceInDays; i++){
+      String day = formatDateTime(start_date.add(Duration(days: i)));
+      print(day);
+      DocumentReference newDocRef = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc();
+
+      await newDocRef.set({
+        'doc_id' : newDocRef.id,
+        'is_fixed' : false,
+        'task_name' : task_name,
+        'is_checked' : false,
+        'start_date' : formatDateTime(start_date),
+        'end_date' : formatDateTime(end_date),
+      });
+    }
   }
 
 

@@ -165,26 +165,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_auth
-      sha256: db5014f5dc1f34f3454cf6b984d2d63712a1a93bba5b1a96e5cac67d6e575fb1
+      sha256: "869ff488c7b467e273d7be223f52d3d026576b6e1da92dcd136ff627ae0a8c67"
       url: "https://pub.dev"
     source: hosted
-    version: "4.14.1"
+    version: "4.15.0"
   firebase_auth_platform_interface:
     dependency: transitive
     description:
       name: firebase_auth_platform_interface
-      sha256: "4d1973e2fcbf7d8665ed9b0766a617d45c9eb5dd08c1a6218ddfe45565fd777b"
+      sha256: ecf9f78ae1a7a1297de01ec975e9e2cfe5b543589b27cc5969849d9a8dc46999
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.5"
+    version: "7.0.6"
   firebase_auth_web:
     dependency: transitive
     description:
       name: firebase_auth_web
-      sha256: "78899b86647dd91f520fe9cb42e93eb0d696cda7375cbb2225c6dfc5cce631aa"
+      sha256: "96f89e2340cdf373109cb29afec401c170aa2d98fb0833687793c8017e36f435"
       url: "https://pub.dev"
     source: hosted
-    version: "5.8.8"
+    version: "5.8.9"
   firebase_core:
     dependency: "direct main"
     description:
@@ -213,31 +213,39 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_storage
-      sha256: "4fd6b8ff3db962512503bd0ea4df0cfb0ed6f7c8549c16e8b9f5f51cef68a23b"
+      sha256: ef1974043d48b0aa081ad055944ec74cad3a665545849cc6232f8ac1691fd901
       url: "https://pub.dev"
     source: hosted
-    version: "11.5.2"
+    version: "11.5.3"
   firebase_storage_platform_interface:
     dependency: transitive
     description:
       name: firebase_storage_platform_interface
-      sha256: c9988b196fd0d298dde89d22b3fd4e1bb69ef284717394ba3d7190565b9554fa
+      sha256: "7b5aa0bf53de4a983aa3df57ab2bc0509d75fe2d269a0029a814aa84484798d5"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "5.1.1"
   firebase_storage_web:
     dependency: transitive
     description:
       name: firebase_storage_web
-      sha256: a4370c1432b11381440352116fff10e07af39d504629de7fba4627fb5aeeecdd
+      sha256: bc5ede7fd6dfe7e23821cce007cd551cf77f47f44f8c3ea4f270dea0372051dc
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.14"
+    version: "3.6.15"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_date_range_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_date_range_picker
+      sha256: c670b418bb3ca9d7e4a6afe21e48b90c57a03f22c35e468ccc8c6552a21883c9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.14"
   flutter_launcher_icons:
     dependency: "direct main"
     description:

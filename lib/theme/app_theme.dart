@@ -11,6 +11,13 @@ class AppTheme {
       // scaffoldBackgroundColor: Colors.white,
       // canvasColor: Colors.white,
 
+      textSelectionTheme: TextSelectionThemeData(
+        selectionHandleColor: AppColors.primary, // 선택 핸들의 색상을 변경합니다.
+        selectionColor: AppColors.primary.withOpacity(0.5), // 선택된 텍스트의 색상을 변경합니다.
+        cursorColor: AppColors.primary,
+      ),
+
+
       bottomAppBarTheme: BottomAppBarTheme(
           color: Colors.white,
         elevation: 0,
