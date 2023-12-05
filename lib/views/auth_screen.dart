@@ -10,14 +10,12 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('authscreen');
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           User? user = snapshot.data;
           if (user == null) {
-            print('authscreennull');
             return LoginScreen(); // 사용자가 로그인하지 않았을 때 로그인 화면으로 이동
           }
           print(user);

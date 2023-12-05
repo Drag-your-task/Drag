@@ -26,4 +26,8 @@ class AuthViewModel with ChangeNotifier {
     _service.signOutWithGoogle();
   }
 
+  void signWithEmail(){
+    _service.signInWithEmailPassword('','');
+  }
+
 }

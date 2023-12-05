@@ -25,4 +25,9 @@ class AuthService {
     await FirebaseAuth.instance.signOut();
   }
 
+  Future<UserCredential> signInWithEmailPassword(String email, String password) async {
+    print('auth serveice');
+    return await FirebaseAuth.instance.signInWithEmailAndPassword(email: 'leesin1003@naver.com', password: '1234');
+  }
+
 }
