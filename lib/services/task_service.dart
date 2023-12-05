@@ -75,8 +75,8 @@ class TaskService {
         'order': tasks,
       });
     }
-
   }
+
 
   void updateFixedList(String day){
 
@@ -107,6 +107,43 @@ class TaskService {
     }
 
   }
+
+  Future<void> updateTask(DateTime start_date, DateTime end_date, String task_name) async {
+    int differenceInDays = end_date.difference(start_date).inDays;
+
+    // await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id).update({
+    //
+    // });
+
+    // for(int i=0; i<=differenceInDays; i++){
+    //   String day = formatDateTime(start_date.add(Duration(days: i)));
+    //   print(day);
+    //   DocumentReference new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc();
+    //
+    //   await new_task_doc_ref.update({
+    //     'doc_id' : new_task_doc_ref.id,
+    //     'is_fixed' : false,
+    //     'task_name' : task_name,
+    //     'is_checked' : false,
+    //     'start_date' : start_date,
+    //     'end_date' : end_date,
+    //   });
+    //
+    //   List<String> tasks = await getDraggableList(day);
+    //   tasks.add(new_task_doc_ref.id);
+    //   updateDraggableList(day, tasks);
+    //
+    // }
+  }
+
+  Future<void> deleteTask(String day, String doc_id, List<String> tasks) async {
+    await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id).delete();
+    await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('draggable_list').doc('order').update({
+      'order': tasks,
+    });
+  }
+
+
 
 
 }

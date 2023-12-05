@@ -27,9 +27,9 @@ class TaskViewModel with ChangeNotifier {
   List<String> draggable_list = [];
 
   Future<void> _loadInitialData() async {
-    await loadTasks();
-    await loadFixedList();
-    await loadDraggableList();
+    loadTasks();
+    loadFixedList();
+    loadDraggableList();
   }
 
 
@@ -65,7 +65,7 @@ class TaskViewModel with ChangeNotifier {
 
 
 
-  void toggleCheck(TaskModel task){
+  Future<void> toggleCheck(TaskModel task) async {
     taskService.updateCheck(task.doc_id, task.is_checked!,formatDateTime(selectedDay));
     loadTasks();
     //notifyListeners();
@@ -97,8 +97,18 @@ class TaskViewModel with ChangeNotifier {
     // Firestore에서도 이동 반영
   }
 
-  void addTask(DateTime start_date, DateTime end_date, String task_name){
-    taskService.createTask(start_date, end_date, task_name);
+  Future<void> addTask(DateTime start_date, DateTime end_date, String task_name) async {
+    await taskService.createTask(start_date, end_date, task_name);
+    _loadInitialData();
+  }
+
+  void editTask(DateTime start_date, DateTime end_date, String task_name){
+
+  }
+
+  void deleteTask(DateTime day, String doc_id){
+    draggable_list.remove(doc_id);
+    taskService.deleteTask(formatDateTime(day), doc_id, draggable_list);
     _loadInitialData();
   }
 

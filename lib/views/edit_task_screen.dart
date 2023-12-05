@@ -89,7 +89,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   );
                 }
               },
-              child: Text('Add', style: TextStyle(
+              child: Text('Edit', style: TextStyle(
                 color: AppColors.primary,
               ),)
           ),

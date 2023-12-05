@@ -279,6 +279,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void _showBottomSheet(BuildContext context, TaskModel task){
+    //final taskViewModel = Provider.of<TaskViewModel>(context);
+
     showModalBottomSheet(
       isScrollControlled: true,
         context: context,
@@ -289,85 +291,85 @@ class _CalendarScreenState extends State<CalendarScreen> {
             padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
             height: MediaQuery.of(bc).size.height * 0.8,
             width: MediaQuery.of(bc).size.width,
-            child: Column(
+            child: Consumer<TaskViewModel>(
+              builder: (BuildContext context, TaskViewModel value, Widget? child) {
+              return Column(
 
-              children: [
-                // SizedBox(height: 50,),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        onPressed: (){
-                          print('asdfasdfads');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditTaskScreen(task)),
-                          );
-                        },
-                        child: Container(
-                          // alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width/2 - 100,
-                          height: 70,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('\u{270D}'),
-                              Text('Edit'),
-                            ],
-                          ),
-                        )),
-                    SizedBox(width: 20,),
-                    ElevatedButton(
-                        onPressed: (){
-
-                        },
-                        child: Container(
-                          // alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width/2 - 100,
-                          height: 70,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('\u{1F5D1}'),
-                              Text('Delete'),
-                            ],
-                          ),
-                        )),
-                  ],
-                ),
-
-                SizedBox(height: 30,),
-                Text(task.task_name,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-
-                if(differenceInDays != null)
-                  Text('D-'+ differenceInDays.toString(), style: TextStyle(fontSize: 100,color: AppColors.primary),),
-
-
-                if(differenceInDays != null)
+                children: [
+                  // SizedBox(height: 50,),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(formatDateTime(task.start_date!).substring(0,11),),
-                      Text(' ~ '),
-                      Text(formatDateTime(task.end_date!).substring(0,11)),
+                      ElevatedButton(
+                          onPressed: (){
+                            print('asdfasdfads');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => EditTaskScreen(task)),
+                            );
+                          },
+                          child: Container(
+                            // alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width/2 - 100,
+                            height: 70,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('\u{270D}'),
+                                Text('Edit'),
+                              ],
+                            ),
+                          )),
+                      SizedBox(width: 20,),
+                      ElevatedButton(
+                          onPressed: (){
+                            value.deleteTask(value.selectedDay, task.doc_id);
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            // alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width/2 - 100,
+                            height: 70,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('\u{1F5D1}'),
+                                Text('Delete'),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
 
-                if(task.is_fixed == true)
-                  Column(
-                    children: [
-                      Text(task.fixed_time.toString()),
-                      Text(task.location.toString()),
-                    ],
-                  ),
+                  SizedBox(height: 30,),
+                  Text(task.task_name,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
 
-                SizedBox(height: 50,),
-                Consumer<TaskViewModel>(
+                  if(differenceInDays != null)
+                    Text('D-'+ differenceInDays.toString(), style: TextStyle(fontSize: 100,color: AppColors.primary),),
 
-                  builder: (BuildContext context, TaskViewModel value, Widget? child) {
-                  return InkWell(
+
+                  if(differenceInDays != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(formatDateTime(task.start_date!).substring(0,11),),
+                        Text(' ~ '),
+                        Text(formatDateTime(task.end_date!).substring(0,11)),
+                      ],
+                    ),
+
+                  if(task.is_fixed == true)
+                    Column(
+                      children: [
+                        Text(task.fixed_time.toString()),
+                        Text(task.location.toString()),
+                      ],
+                    ),
+
+                  SizedBox(height: 50,),
+                  InkWell(
                     child: Image.asset(
                       (task?.is_checked == true)
                           ? "assets/img/checked.png"
@@ -378,11 +380,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       print('asdf');
                       value.toggleCheck(task);
                     },
-                  );},
-                ),
+                  ),
 
 
-              ],
+                ],
+              );
+              },
             ),
           );
         }
@@ -464,7 +467,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               Consumer<TaskViewModel>(
                   builder: (context, provider, child) {
-
+                    print(provider.draggable_list.length);
                   return Container(
                     height: provider.draggable_list.length == 0 ? 0:150,
                     decoration: BoxDecoration(
