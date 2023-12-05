@@ -23,7 +23,8 @@ class AppTheme {
         elevation: 0,
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.white,
+        //color: Colors.white,
+        backgroundColor: Colors.white,
       ),
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(

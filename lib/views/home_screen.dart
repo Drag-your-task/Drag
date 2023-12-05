@@ -39,22 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-  // void _showBottomSheet(BuildContext context){
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-  //       context: context,
-  //       builder: (BuildContext bc){
-  //         return Container(
-  //           color: Colors.white,
-  //           height: MediaQuery.of(bc).size.height,
-  //           width: MediaQuery.of(bc).size.width,
-  //           child: AddTaskScreen(),
-  //         );
-  //       }
-  //   );
-  // }
-
-
   void _showCupertinoTimePicker(BuildContext context) {
     showCupertinoModalPopup(
       context: context,

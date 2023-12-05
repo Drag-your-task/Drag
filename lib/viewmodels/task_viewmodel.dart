@@ -27,9 +27,9 @@ class TaskViewModel with ChangeNotifier {
   List<String> draggable_list = [];
 
   Future<void> _loadInitialData() async {
-    loadTasks();
-    loadFixedList();
-    loadDraggableList();
+    await loadTasks();
+    await loadFixedList();
+    await loadDraggableList();
   }
 
 
@@ -48,15 +48,15 @@ class TaskViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  int findTask(String doc_id){//tasks에서 해당 doc_id를 포함하는 index찾기
-    int i;
-    for(i=0; i<tasks.length; i++){
-      if(tasks[i].doc_id == doc_id){
-        break;
+  int findTask(String doc_id) {
+    for (int i = 0; i < tasks.length; i++) {
+      if (tasks[i].doc_id == doc_id) {
+        return i;
       }
     }
-    return i;
+    return -1; // 일치하는 항목이 없는 경우
   }
+
 
   int findTaskIndex(String taskId, bool isFixedList) {//fixed_list 나 draggable_list 에서 찾기
     List<String> taskList = isFixedList ? fixed_list : draggable_list;
@@ -99,8 +99,7 @@ class TaskViewModel with ChangeNotifier {
 
   void addTask(DateTime start_date, DateTime end_date, String task_name){
     taskService.createTask(start_date, end_date, task_name);
-    notifyListeners();
+    _loadInitialData();
   }
-
 
 }
