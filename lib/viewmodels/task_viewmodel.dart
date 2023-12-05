@@ -106,10 +106,13 @@ class TaskViewModel with ChangeNotifier {
 
   }
 
-  void deleteTask(DateTime day, String doc_id){
+  Future<void> deleteTask(DateTime day, String doc_id) async {
+    print('delete');
+    print(formatDateTime(day));
+    print(doc_id);
     draggable_list.remove(doc_id);
-    taskService.deleteTask(formatDateTime(day), doc_id, draggable_list);
-    _loadInitialData();
+    await taskService.deleteTask(formatDateTime(day), doc_id, draggable_list);
+    await _loadInitialData();
   }
 
 }

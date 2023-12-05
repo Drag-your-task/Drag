@@ -144,7 +144,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          task?.fixed_time.toString() ?? '',
+                          task.fixed_time.toString(),
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -153,7 +153,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                         Container(
                           child: Text(
-                            task?.task_name.toString() ?? '',
+                            task.task_name.toString() ,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
@@ -165,7 +165,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           width: MediaQuery.of(context).size.width / 2 - 87,
                         ),
                         Text(
-                          task?.location.toString() ?? '',
+                          task.location.toString() ?? '',
                           style: TextStyle(
                             fontSize: 10,
                           ),
@@ -183,7 +183,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                   ),
                   onTap: () {
-                    _showBottomSheet(context, task);
+                    int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
+                    _showBottomSheet(context, idx,differenceInDays);
                   },
                 ),
               ],
@@ -217,7 +218,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   children: [
                     InkWell(
                       child: Image.asset(
-                        (task?.is_checked == true)
+                        (task.is_checked == true)
                             ? "assets/img/checked.png"
                             : "assets/img/notchecked.png",
                         width: 20,
@@ -234,7 +235,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       children: [
                         Container(
                           child: Text(
-                            task?.task_name.toString() ?? '',
+                            task.task_name.toString() ?? '',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
@@ -248,7 +249,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           width: MediaQuery.of(context).size.width / 2 - 87,
                         ),
                         Text(
-                          '~ ' + formatDateTime(task!.end_date!).substring(0,11),
+                          '~ ' + formatDateTime(task.end_date!).substring(0,11),
                           style: TextStyle(
                             fontSize: 10,
                             //fontWeight: FontWeight.bold,
@@ -267,7 +268,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                   ),
                   onTap: () {
-                    _showBottomSheet(context, task);
+                    int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
+                    _showBottomSheet(context, idx,differenceInDays);
+
+
                   },
                 ),
               ],
@@ -278,14 +282,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  void _showBottomSheet(BuildContext context, TaskModel task){
+  void _showBottomSheet(BuildContext context, int idx, int? differenceInDays){
     //final taskViewModel = Provider.of<TaskViewModel>(context);
 
     showModalBottomSheet(
       isScrollControlled: true,
         context: context,
         builder: (BuildContext bc){
-          int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
           return Container(
             color: Colors.white,
             padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -293,99 +296,106 @@ class _CalendarScreenState extends State<CalendarScreen> {
             width: MediaQuery.of(bc).size.width,
             child: Consumer<TaskViewModel>(
               builder: (BuildContext context, TaskViewModel value, Widget? child) {
-              return Column(
-
-                children: [
-                  // SizedBox(height: 50,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          onPressed: (){
-                            print('asdfasdfads');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => EditTaskScreen(task)),
-                            );
-                          },
-                          child: Container(
-                            // alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width/2 - 100,
-                            height: 70,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('\u{270D}'),
-                                Text('Edit'),
-                              ],
-                            ),
-                          )),
-                      SizedBox(width: 20,),
-                      ElevatedButton(
-                          onPressed: (){
-                            value.deleteTask(value.selectedDay, task.doc_id);
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            // alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width/2 - 100,
-                            height: 70,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('\u{1F5D1}'),
-                                Text('Delete'),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-
-                  SizedBox(height: 30,),
-                  Text(task.task_name,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-
-                  if(differenceInDays != null)
-                    Text('D-'+ differenceInDays.toString(), style: TextStyle(fontSize: 100,color: AppColors.primary),),
-
-
-                  if(differenceInDays != null)
+                return Column(
+                  children: [
+                    // SizedBox(height: 50,),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(formatDateTime(task.start_date!).substring(0,11),),
-                        Text(' ~ '),
-                        Text(formatDateTime(task.end_date!).substring(0,11)),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditTaskScreen(value.tasks[idx])),
+                              );
+                            },
+                            child: Container(
+                              // alignment: Alignment.center,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 2 - 100,
+                              height: 70,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('\u{270D}'),
+                                  Text('Edit'),
+                                ],
+                              ),
+                            )),
+                        SizedBox(width: 20,),
+                        ElevatedButton(
+                            onPressed: () {
+                              value.deleteTask(
+                                  value.selectedDay, value.tasks[idx].doc_id);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              // alignment: Alignment.center,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 2 - 100,
+                              height: 70,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('\u{1F5D1}'),
+                                  Text('Delete'),
+                                ],
+                              ),
+                            )),
                       ],
                     ),
 
-                  if(task.is_fixed == true)
-                    Column(
-                      children: [
-                        Text(task.fixed_time.toString()),
-                        Text(task.location.toString()),
-                      ],
+                    SizedBox(height: 30,),
+                    Text(value.tasks[idx].task_name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),),
+
+                    if(differenceInDays != null)
+                      Text('D-' + differenceInDays.toString(), style: TextStyle(
+                          fontSize: 100, color: AppColors.primary),),
+
+
+                    if(differenceInDays != null)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(formatDateTime(value.tasks[idx].start_date!)
+                              .substring(0, 11),),
+                          Text(' ~ '),
+                          Text(formatDateTime(value.tasks[idx].end_date!)
+                              .substring(0, 11)),
+                        ],
+                      ),
+
+                    if(value.tasks[idx].is_fixed == true)
+                      Column(
+                        children: [
+                          Text(value.tasks[idx].fixed_time.toString()),
+                          Text(value.tasks[idx].location.toString()),
+                        ],
+                      ),
+
+                    SizedBox(height: 50,),
+                    InkWell(
+                      child: Image.asset(
+                        (value.tasks[idx].is_checked == true)
+                            ? "assets/icons/grab_icon/4x/grab_icon_orange_4x_full.png"
+                            : "assets/icons/grab_icon/4x/grab_icon_orange_4x.png",
+                        width: 200,
+                      ),
+                      onTap: () {
+                        value.toggleCheck(value.tasks[idx]);
+                      },
                     ),
-
-                  SizedBox(height: 50,),
-                  InkWell(
-                    child: Image.asset(
-                      (task?.is_checked == true)
-                          ? "assets/img/checked.png"
-                          : "assets/img/notchecked.png",
-                      width: 150,
-                    ),
-                    onTap: () {
-                      print('asdf');
-                      value.toggleCheck(task);
-                    },
-                  ),
-
-
-                ],
-              );
-              },
+                  ],
+                );
+              }
             ),
           );
         }
@@ -467,9 +477,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               Consumer<TaskViewModel>(
                   builder: (context, provider, child) {
-                    print(provider.draggable_list.length);
+                    //print(provider.draggable_list.length);
                   return Container(
-                    height: provider.draggable_list.length == 0 ? 0:150,
+                    height: provider.draggable_list.length == 0 ? 0: (provider.draggable_list.length == 1 ? 73:150),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),

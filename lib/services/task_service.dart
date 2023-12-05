@@ -109,6 +109,9 @@ class TaskService {
   }
 
   Future<void> updateTask(DateTime start_date, DateTime end_date, String task_name) async {
+    //선택한 날만 고칠지
+    //선택한 날부터 이후날짜가 있으면 고칠지 - 그러면, 기존 날짜 부분 삭제해야 하는지
+    //어떻게 하지..?
     int differenceInDays = end_date.difference(start_date).inDays;
 
     // await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id).update({
@@ -118,20 +121,13 @@ class TaskService {
     // for(int i=0; i<=differenceInDays; i++){
     //   String day = formatDateTime(start_date.add(Duration(days: i)));
     //   print(day);
-    //   DocumentReference new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc();
+    //   DocumentReference new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id);
     //
     //   await new_task_doc_ref.update({
-    //     'doc_id' : new_task_doc_ref.id,
-    //     'is_fixed' : false,
     //     'task_name' : task_name,
-    //     'is_checked' : false,
     //     'start_date' : start_date,
     //     'end_date' : end_date,
     //   });
-    //
-    //   List<String> tasks = await getDraggableList(day);
-    //   tasks.add(new_task_doc_ref.id);
-    //   updateDraggableList(day, tasks);
     //
     // }
   }

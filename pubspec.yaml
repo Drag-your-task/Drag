@@ -46,6 +46,7 @@ flutter:
     - assets/img/
     - assets/icons/grab_icon/
     - assets/icons/
+    - assets/icons/grab_icon/4x/
   #   - images/a_dot_ham.jpeg
 
   # fonts:

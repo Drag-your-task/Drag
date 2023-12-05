@@ -1,4 +1,5 @@
 import 'package:drag/views/profile_screen.dart';
+import 'package:drag/views/setting_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
@@ -66,12 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
         child: AppBar(
           leading: Image.asset("assets/icons/grab_icon/grab_app_icon.png", height: 10,),
           actions: [
+            // IconButton(
+            //   onPressed: () {  },
+            //   icon: Icon(CupertinoIcons.bell, size: 20,),
+            // ),
             IconButton(
-              onPressed: () {  },
-              icon: Icon(CupertinoIcons.bell, size: 20,),
-            ),
-            IconButton(
-              onPressed: () {  },
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen() ));
+              },
               icon: Icon(CupertinoIcons.ellipsis_circle, size: 20,),
             ),
           ],

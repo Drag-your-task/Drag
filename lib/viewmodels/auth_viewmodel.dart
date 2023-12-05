@@ -21,4 +21,9 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
+  void signOutWithGoogle(){
+    print(_user?.uid);
+    _service.signOutWithGoogle();
+  }
+
 }
