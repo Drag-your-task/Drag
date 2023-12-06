@@ -44,7 +44,7 @@ class AuthViewModel with ChangeNotifier {
 
 
 
-  Future<bool> isEmailAlreadyInUse(String email){
+  Future<String?> isEmailAlreadyInUse(String email){
     return _service.isEmailAlreadyInUse(email);
   }
 

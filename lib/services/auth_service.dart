@@ -95,23 +95,23 @@ class AuthService {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  Future<bool> isEmailAlreadyInUse(String email) async {
+  Future<String?> isEmailAlreadyInUse(String email) async {
     FirebaseAuth auth = FirebaseAuth.instance;
-
+    print('auth service visit');
     if (!isValidEmail(email)) {
-      print('Invalid email format');
-      return false;
+      print('invalid');
+      return 'Invalid email format';
     }
 
     try {
       List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
       // 로그 출력
       print('Sign in methods for $email: $signInMethods');
-      return signInMethods.isNotEmpty;
+      return null;
     } on FirebaseAuthException catch (e) {
       // 에러 로그 출력
       print('Failed to fetch sign in methods for $email: ${e.message}');
-      return false;
+      return 'Failed';
     }
   }
 

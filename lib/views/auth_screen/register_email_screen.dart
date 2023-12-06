@@ -35,13 +35,6 @@ class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
     super.dispose();
   }
 
-  bool isEmailInUse = false; // 이메일 중복 여부를 저장하는 변수
-  bool isCheckingEmail = false; // 이메일 중복 검사 중인지 여부를 저장하는 변수
-
-  bool isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -51,24 +44,6 @@ class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
     );
   }
 
-  void checkEmail(String email) async {
-    if (email.isEmpty) {
-      setState(() {
-        isEmailInUse = false; // 이메일이 비어있으면 중복 여부를 false로 설정
-      });
-      return;
-    }
-
-    setState(() {
-      isCheckingEmail = true; // 이메일 검사 중 상태로 설정
-    });
-
-    bool emailInUse = await authViewModel.isEmailAlreadyInUse(email);
-    setState(() {
-      isEmailInUse = emailInUse;
-      isCheckingEmail = false; // 이메일 검사 완료 상태로 설정
-    });
-  }
 
 
 
@@ -113,17 +88,16 @@ class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
                           hintText: 'Email',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
-                        onChanged: (value) {
-                          checkEmail(value);
-                        },
+                        // onChanged: (value) {
+                        //   checkEmail(value);
+                        // },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Enter your email address';
-                          } else if (isEmailInUse) {
-                            return 'Email is already in use';
-                          } else if (isCheckingEmail) {
-                            return 'Checking email...'; // 선택적: 이메일 검사 중 메시지
                           }
+
+                          //email valid 한지 체크 추가로 해야함...
+                          //일단 보류
                           return null;
                         },
                       ),
@@ -230,7 +204,6 @@ class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
                     onPressed: (){
 
                       if (_formKey.currentState!.validate()) {
-                        //print(email_controller.text +  password_controller.text);
                         authViewModel.registerWithEmail(email_controller.text, password_controller.text);
 
                         email_controller.clear();
