@@ -1,6 +1,6 @@
 import 'package:drag/theme/colors.dart';
 import 'package:drag/viewmodels/auth_viewmodel.dart';
-import 'package:drag/views/auth_screen.dart';
+import 'package:drag/views/auth_screen/auth_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +71,8 @@ class SettingScreen extends StatelessWidget {
                 onTap: (){
                   authViewModel.signOutWithGoogle();
                   //Navigator.of(context).popUntil((route) => route.isFirst);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> AuthScreen()));
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  //Navigator.push(context, MaterialPageRoute(builder: (context)=> AuthScreen()));
                 },
               )
             ],

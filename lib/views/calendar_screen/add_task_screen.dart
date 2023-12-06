@@ -1,22 +1,20 @@
-import 'package:drag/models/task_model.dart';
+import 'package:drag/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../theme/colors.dart';
-import '../utils/uil.dart';
-import '../viewmodels/task_viewmodel.dart';
+import '../../utils/uil.dart';
+import '../../viewmodels/task_viewmodel.dart';
 
-class EditTaskScreen extends StatefulWidget {
-  EditTaskScreen(this.task, {Key? key}) : super(key: key);
-
-  TaskModel task;
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditTaskScreen> createState() => _EditTaskScreenState();
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
 }
 
-class _EditTaskScreenState extends State<EditTaskScreen> {
+class _AddTaskScreenState extends State<AddTaskScreen> {
 
   DateTimeRange? selectedDateRange;
   final TextEditingController _task_controller = TextEditingController();
@@ -27,13 +25,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     _task_controller.dispose();
     super.dispose();
   }
-  @override
-  void initState() {
-    super.initState();
 
-    _task_controller.text = widget.task.task_name;
-    selectedDateRange = DateTimeRange(start: widget.task.start_date!, end: widget.task.end_date!);
-  }
 
 
   void _showDateRangePicker() async {
@@ -89,7 +81,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   );
                 }
               },
-              child: Text('Edit', style: TextStyle(
+              child: Text('Add', style: TextStyle(
                 color: AppColors.primary,
               ),)
           ),
@@ -121,7 +113,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                             borderSide: BorderSide(color: AppColors.primary, width: 2.0),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          hintText: 'Type your task and emoji',
+                          //hintText: 'Type your task and emoji',
                         ),
 
                         validator: (value) {
@@ -141,21 +133,21 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 child: const Text('Select Date'),
               ),
               SizedBox(height: 10,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '\u{1F525} Selected Date Range \u{1F525}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '\u{1F525} Selected Date Range \u{1F525}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
 
-                  selectedDateRange == null?
-                  Text('not selected yet'):
-                  Text('${formatDateTime(selectedDateRange!.start)} - ${formatDateTime(selectedDateRange!.end)}')
-                ],
-              ),
+                    selectedDateRange == null?
+                        Text('not selected yet'):
+                    Text('${formatDateTime(selectedDateRange!.start)} - ${formatDateTime(selectedDateRange!.end)}')
+                  ],
+                ),
             ],
           ),
         ),

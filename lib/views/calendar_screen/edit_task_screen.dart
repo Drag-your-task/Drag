@@ -1,20 +1,22 @@
-import 'package:drag/theme/colors.dart';
+import 'package:drag/models/task_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/uil.dart';
-import '../viewmodels/task_viewmodel.dart';
+import '../../theme/colors.dart';
+import '../../utils/uil.dart';
+import '../../viewmodels/task_viewmodel.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+class EditTaskScreen extends StatefulWidget {
+  EditTaskScreen(this.task, {Key? key}) : super(key: key);
+
+  TaskModel task;
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<EditTaskScreen> createState() => _EditTaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _EditTaskScreenState extends State<EditTaskScreen> {
 
   DateTimeRange? selectedDateRange;
   final TextEditingController _task_controller = TextEditingController();
@@ -25,7 +27,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     _task_controller.dispose();
     super.dispose();
   }
+  @override
+  void initState() {
+    super.initState();
 
+    _task_controller.text = widget.task.task_name;
+    selectedDateRange = DateTimeRange(start: widget.task.start_date!, end: widget.task.end_date!);
+  }
 
 
   void _showDateRangePicker() async {
@@ -81,7 +89,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   );
                 }
               },
-              child: Text('Add', style: TextStyle(
+              child: Text('Edit', style: TextStyle(
                 color: AppColors.primary,
               ),)
           ),
@@ -133,21 +141,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: const Text('Select Date'),
               ),
               SizedBox(height: 10,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '\u{1F525} Selected Date Range \u{1F525}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '\u{1F525} Selected Date Range \u{1F525}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
 
-                    selectedDateRange == null?
-                        Text('not selected yet'):
-                    Text('${formatDateTime(selectedDateRange!.start)} - ${formatDateTime(selectedDateRange!.end)}')
-                  ],
-                ),
+                  selectedDateRange == null?
+                  Text('not selected yet'):
+                  Text('${formatDateTime(selectedDateRange!.start)} - ${formatDateTime(selectedDateRange!.end)}')
+                ],
+              ),
             ],
           ),
         ),

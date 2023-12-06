@@ -1,11 +1,11 @@
-import 'package:drag/views/profile_screen.dart';
+import 'package:drag/views/profile_screen/profile_screen.dart';
 import 'package:drag/views/setting_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import '../theme/colors.dart';
-import 'add_task_screen.dart';
-import 'calendar_screen.dart';
+import 'calendar_screen/add_task_screen.dart';
+import 'calendar_screen/calendar_screen.dart';
 
 class HomeScreen extends StatefulWidget{
 

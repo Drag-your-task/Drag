@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'home_screen.dart';
+import '../home_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
