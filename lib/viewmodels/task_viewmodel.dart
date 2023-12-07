@@ -6,6 +6,15 @@ import '../models/task_model.dart';
 import '../utils/uil.dart';
 
 class TaskViewModel with ChangeNotifier {
+
+  final TaskService taskService = TaskService();
+
+  List<TaskModel> tasks = [];
+  List<String> fixed_list = [];
+  List<String> draggable_list = [];
+
+  List<List<TaskModel>> fixed_timetable = [];
+
   DateTime selectedDay = DateTime.now();
 
   void set_selectedDay(DateTime day){
@@ -16,15 +25,11 @@ class TaskViewModel with ChangeNotifier {
 
 
   TaskViewModel(){
-    print("day: "+formatDateTime(selectedDay));
+    // print("day: "+formatDateTime(selectedDay));
     _loadInitialData();
+    getFixedTime();
   }
 
-
-  final TaskService taskService = TaskService();
-  List<TaskModel> tasks = [];
-  List<String> fixed_list = [];
-  List<String> draggable_list = [];
 
   Future<void> _loadInitialData() async {
     loadTasks();
@@ -125,5 +130,52 @@ class TaskViewModel with ChangeNotifier {
 
     await _loadInitialData();
   }
+
+
+  DateTime? tryParseStartTime(String? timeRange) {
+    if (timeRange == null) return null;
+
+    try {
+      final startTimeStr = timeRange.split(' ~ ')[0];
+      final timeParts = startTimeStr.split(':');
+      if (timeParts.length != 2) return null;
+
+      return DateTime(2000, 1, 1, int.parse(timeParts[0]), int.parse(timeParts[1]));
+    } catch (e) {
+      // Handle the error or log it
+      print('Error parsing time: $e');
+      return null;
+    }
+  }
+
+  void sortTasksByTime(List<TaskModel> tasks) {
+    tasks.sort((TaskModel a, TaskModel b) {
+      final DateTime? aTime = tryParseStartTime(a.fixed_time);
+      final DateTime? bTime = tryParseStartTime(b.fixed_time);
+
+      if (aTime == null && bTime == null) return 0;
+      if (aTime == null) return 1;
+      if (bTime == null) return -1;
+
+      return aTime!.compareTo(bTime!);
+    });
+
+  }
+
+  Future<void> getFixedTime() async {
+    await taskService.getFixedTime().then((value) {
+      if (value != null) {
+        for (List<TaskModel> dailyTasks in value) {
+          if (dailyTasks.isNotEmpty) { // Check if the daily tasks list is not empty
+            sortTasksByTime(dailyTasks); // Sort the tasks
+          }
+        }
+        fixed_timetable = value;
+      }
+    });
+    notifyListeners();
+  }
+
+
 
 }

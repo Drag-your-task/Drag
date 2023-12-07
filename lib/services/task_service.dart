@@ -178,7 +178,37 @@ class TaskService {
     });
   }
 
+  List<TaskModel> makeDocsToList(QuerySnapshot querySnapshot){
+    return querySnapshot.docs.map((doc){
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      // print(data);
+      return TaskModel(
+        doc_id: data['doc_id'],
+        is_fixed: data['is_fixed'],
+        task_name: data['task_name'],
+        location: data['location'],
+        fixed_time: data['fixed_time'],
+        is_checked: data['is_checked'],
+      );
+    }).toList();
+  }
 
+
+  Future<List<List<TaskModel>>?> getFixedTime() async {
+    DocumentReference<Map<String, dynamic>> reference = await _firestore.collection('user').doc(_firebaseAuth.currentUser?.uid).collection('fixed_time').doc('tasks');
+    //querySnapshot = await _firestore.collection('/calendar/ 0U1fvPHkXVXUg9AQyduBOGzUim83/task').get();
+
+    List<List<TaskModel>> tasks = [];
+    tasks.addAll(await reference.collection('mon').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('tue').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('wed').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('thu').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('fri').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('sat').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('sun').get().then((value) => [makeDocsToList(value)]));
+
+    return tasks;
+  }
 
 
 }

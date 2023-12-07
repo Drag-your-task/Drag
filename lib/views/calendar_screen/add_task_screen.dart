@@ -89,66 +89,69 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ),
       body: SafeArea(
         child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 50,),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Text('Type your Task and Emoji', style: TextStyle(fontWeight: FontWeight.bold),),
-                    SizedBox(height: 8,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextFormField(
-                        autofocus: true,
-                        controller:_task_controller,
-                        cursorColor: AppColors.primary,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.primary),
-                            borderRadius: BorderRadius.circular(8),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                SizedBox(height: 50,),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Text('Type your Task and Emoji', style: TextStyle(fontWeight: FontWeight.bold),),
+                      SizedBox(height: 8,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TextFormField(
+                          autofocus: true,
+                          controller:_task_controller,
+                          cursorColor: AppColors.primary,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.primary),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.primary, width: 2.0),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            //hintText: 'Type your task and emoji',
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.primary, width: 2.0),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          //hintText: 'Type your task and emoji',
+
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Type your task and emoji';
+                            }
+                            return null;
+                          },
                         ),
-
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Type your task and emoji';
-                          }
-                          return null;
-                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 50,),
-              ElevatedButton(
-                onPressed: _showDateRangePicker,
-                child: const Text('Select Date'),
-              ),
-              SizedBox(height: 10,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '\u{1F525} Selected Date Range \u{1F525}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                SizedBox(height: 50,),
+                ElevatedButton(
+                  onPressed: _showDateRangePicker,
+                  child: const Text('Select Date'),
+                ),
+                SizedBox(height: 10,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '\u{1F525} Selected Date Range \u{1F525}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
 
-                    selectedDateRange == null?
-                        Text('not selected yet'):
-                    Text('${formatDateTime(selectedDateRange!.start)} - ${formatDateTime(selectedDateRange!.end)}')
-                  ],
-                ),
-            ],
+                      selectedDateRange == null?
+                          Text('not selected yet'):
+                      Text('${formatDateTime(selectedDateRange!.start)} - ${formatDateTime(selectedDateRange!.end)}')
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
