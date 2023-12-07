@@ -80,6 +80,9 @@ class TaskService {
 
   void updateFixedList(String day){
 
+
+
+
   }
 
   Future<void> createTask(DateTime start_date, DateTime end_date, String task_name) async {
@@ -132,10 +135,46 @@ class TaskService {
     // }
   }
 
-  Future<void> deleteTask(String day, String doc_id, List<String> tasks) async {
+  Future<void> deleteTask(bool isInFixedList, String day, String doc_id, List<String> tasks) async {
     await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id).delete();
+    if(isInFixedList){
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').update({
+        'order': tasks,
+      });
+    }
+    else{
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('draggable_list').doc('order').update({
+        'order': tasks,
+      });
+    }
+  }
+
+  Future<void> reorderTask(bool inFixedList, List<String> tasks, String day) async {
+    if(inFixedList){
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').update({
+        'order': tasks,
+      });
+    }else{
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('draggable_list').doc('order').update({
+        'order': tasks,
+      });
+    }
+  }
+
+  Future<void> moveTaskToOhterList(List<String> fixed_list, List<String> draggable_list, String day) async {
+    print(fixed_list);
+    if(fixed_list.length == 1){
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').set({
+        'order': fixed_list,
+      });
+    }
+    else if(fixed_list.length > 1){
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').update({
+        'order': fixed_list,
+      });
+    }
     await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('draggable_list').doc('order').update({
-      'order': tasks,
+      'order': draggable_list,
     });
   }
 

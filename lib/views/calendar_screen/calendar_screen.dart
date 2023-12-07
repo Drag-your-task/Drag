@@ -329,7 +329,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         SizedBox(width: 20,),
                         ElevatedButton(
                             onPressed: () {
-                              value.deleteTask(
+                              bool isInFixedList =
+                              value.fixed_list.contains(value.tasks[idx].doc_id);
+
+                              value.deleteTask(isInFixedList,
                                   value.selectedDay, value.tasks[idx].doc_id);
                               Navigator.pop(context);
                             },
@@ -426,7 +429,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   .contains(receivedTaskId);
 
                                 if (isInDraggableList) {
-                                  provider.moveTaskToList(
+                                  provider.moveTaskToOhterList(
                                       receivedTaskId, 0, true);
                                 }
 
@@ -469,7 +472,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             .contains(receivedTaskId);
 
                                         if (isInDraggableList) {
-                                          provider.moveTaskToList(
+                                          provider.moveTaskToOhterList(
                                               receivedTaskId, index, true);
                                         } else if (isInFixedList) {
                                           // 같은 드래그 가능한 리스트 내에서 위치 변경

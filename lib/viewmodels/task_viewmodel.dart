@@ -78,12 +78,13 @@ class TaskViewModel with ChangeNotifier {
     List<String> list = inFixedList ? fixed_list : draggable_list;
     list.remove(taskId);
     list.insert(newIndex, taskId);
+    taskService.reorderTask(inFixedList, list, formatDateTime(selectedDay));
     notifyListeners();
     // Firestore에서도 순서 변경 반영
   }
 
   // 다른 리스트로 아이템 이동
-  void moveTaskToList(String taskId,int newIndex, bool toFixedList) {
+  void moveTaskToOhterList(String taskId,int newIndex, bool toFixedList) {
     if (toFixedList) {
       draggable_list.remove(taskId);
       fixed_list.insert(newIndex,taskId);
@@ -91,8 +92,7 @@ class TaskViewModel with ChangeNotifier {
       fixed_list.remove(taskId);
       draggable_list.insert(newIndex,taskId);
     }
-    print(draggable_list);
-    print(fixed_list);
+    taskService.moveTaskToOhterList(fixed_list,draggable_list, formatDateTime(selectedDay));
     notifyListeners();
     // Firestore에서도 이동 반영
   }
@@ -100,6 +100,7 @@ class TaskViewModel with ChangeNotifier {
   void moveDragToFixedAtLast(String taskId){
     draggable_list.remove(taskId);
     fixed_list.add(taskId);
+    taskService.moveTaskToOhterList(fixed_list,draggable_list, formatDateTime(selectedDay));
     notifyListeners();
   }
 
@@ -113,12 +114,15 @@ class TaskViewModel with ChangeNotifier {
 
   }
 
-  Future<void> deleteTask(DateTime day, String doc_id) async {
-    print('delete');
-    print(formatDateTime(day));
-    print(doc_id);
-    draggable_list.remove(doc_id);
-    await taskService.deleteTask(formatDateTime(day), doc_id, draggable_list);
+  Future<void> deleteTask(bool isInFixedList, DateTime day, String doc_id) async {
+    if(isInFixedList){
+      fixed_list.remove(doc_id);
+      await taskService.deleteTask(isInFixedList, formatDateTime(day), doc_id, fixed_list);
+    }else{
+      draggable_list.remove(doc_id);
+      await taskService.deleteTask(isInFixedList, formatDateTime(day), doc_id, draggable_list);
+    }
+
     await _loadInitialData();
   }
 
