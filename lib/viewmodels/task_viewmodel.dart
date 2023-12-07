@@ -97,6 +97,13 @@ class TaskViewModel with ChangeNotifier {
     // Firestore에서도 이동 반영
   }
 
+  void moveDragToFixedAtLast(String taskId){
+    draggable_list.remove(taskId);
+    fixed_list.add(taskId);
+    notifyListeners();
+  }
+
+
   Future<void> addTask(DateTime start_date, DateTime end_date, String task_name) async {
     await taskService.createTask(start_date, end_date, task_name);
     _loadInitialData();

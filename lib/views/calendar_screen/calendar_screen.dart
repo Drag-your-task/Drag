@@ -115,7 +115,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       color: Colors.white,
       elevation: 0.3,
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -199,10 +198,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final taskViewModel = Provider.of<TaskViewModel>(context);
 
     return Card(
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+      // margin: EdgeInsets.fromLTRB(10, 2, 10, 2),
       //color: AppColors.secondary,
       color: Colors.white,
       elevation: 0.3,
@@ -335,10 +335,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             },
                             child: Container(
                               // alignment: Alignment.center,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 2 - 100,
+                              width: MediaQuery.of(context).size.width / 2 - 100,
                               height: 70,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -416,70 +413,125 @@ class _CalendarScreenState extends State<CalendarScreen> {
           child: Column(
             children: [
               Expanded(
-                child: Consumer<TaskViewModel>(
-                    builder: (context, provider, child) {
-                        return ListView.builder(
-                            itemCount: provider.fixed_list.length,
-                            // 항목의 수를 설정합니다.
-                            itemBuilder: (context, index) {
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                  child: Consumer<TaskViewModel>(
+                      builder: (context, provider, child) {
+                        if(provider.fixed_list.length == 0){
+                          return DragTarget<String>(
+                            onAccept: (receivedTaskId) {
+                              bool isInDraggableList = provider
+                                  .draggable_list
+                                  .contains(receivedTaskId);
 
-                              return DragTarget<String>(
-                                onAccept: (receivedTaskId) {
-                                  bool isInFixedList =
-                                  provider.fixed_list.contains(receivedTaskId);
-                                  bool isInDraggableList = provider
-                                      .draggable_list
-                                      .contains(receivedTaskId);
-
-                                  if (isInDraggableList) {
-                                    provider.moveTaskToList(
-                                        receivedTaskId, index, true);
-                                  } else if (isInFixedList) {
-                                    // 같은 드래그 가능한 리스트 내에서 위치 변경
-                                    provider.reorderTask(
-                                        receivedTaskId, index, true);
-                                  }
-                                },
-                                builder: (context, candidateData,
-                                    rejectedData) {
-                                  int idx = provider.findTask(
-                                      provider.fixed_list[index]);
-
-                                  if (idx == -1) {
-                                    // 유효하지 않은 인덱스일 경우 처리
-                                    return SizedBox(); // 또는 다른 위젯 반환
-                                  }
-
-                                  TaskModel task = provider.tasks[idx];
-                                  String taskId = provider.fixed_list[index];
-                                  return LongPressDraggable<String>(
-                                    data: taskId,
-                                    feedback: provider.tasks[idx].is_fixed
-                                        ? fixed_card(context, task, idx)
-                                        : draggable_card(context, task, idx),
-                                    // 드래그하는 동안 보여줄 위젯
-                                    childWhenDragging: Opacity(
-                                      opacity: 0.5,
-                                      child: provider.tasks[idx].is_fixed
-                                          ? fixed_card(context, task, idx)
-                                          : draggable_card(context, task,
-                                          idx), // 드래그할 때 원래 위치에 보여줄 위젯
-                                    ),
-                                    child: provider.tasks[idx].is_fixed
-                                        ? fixed_card(context, task, idx)
-                                        : draggable_card(context, task, idx),
-                                  );
-                                },
+                              if (isInDraggableList) {
+                                provider.moveTaskToList(
+                                    receivedTaskId, 0, true);
+                              }
+                            },
+                            builder: (BuildContext context, List<String?> candidateData, List<dynamic> rejectedData) {
+                              return Divider(
+                                color: candidateData.isNotEmpty ? Colors.orange : Colors.grey[100],
+                                thickness: 4,
+                                height: 50,
                               );
-                            });
+                            },
+                          );
+                        }
+                          return ListView.builder(
+                              itemCount: provider.fixed_list.length,
+                              // 항목의 수를 설정합니다.
+                              itemBuilder: (context, index) {
+                                int idx = provider.findTask(
+                                    provider.fixed_list[index]);
 
-                }),
+                                if (idx == -1) {
+                                  // 유효하지 않은 인덱스일 경우 처리
+                                  return SizedBox(); // 또는 다른 위젯 반환
+                                }
+
+                                TaskModel task = provider.tasks[idx];
+                                String taskId = provider.fixed_list[index];
+
+                                return Column(
+                                  children: [
+                                    DragTarget<String>(
+                                      onAccept: (receivedTaskId) {
+                                        bool isInFixedList =
+                                        provider.fixed_list.contains(receivedTaskId);
+                                        bool isInDraggableList = provider
+                                            .draggable_list
+                                            .contains(receivedTaskId);
+
+                                        if (isInDraggableList) {
+                                          provider.moveTaskToList(
+                                              receivedTaskId, index, true);
+                                        } else if (isInFixedList) {
+                                          // 같은 드래그 가능한 리스트 내에서 위치 변경
+                                          provider.reorderTask(
+                                              receivedTaskId, index, true);
+                                        }
+                                      },
+                                      builder: (context, candidateData,
+                                          rejectedData) {
+                                        return Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Column(
+                                            children: [
+                                              Divider(
+                                                color: candidateData.isNotEmpty ? Colors.orange : Colors.grey[100],
+                                                thickness: 4,
+                                                height: 5,
+                                              ),
+                                              LongPressDraggable<String>(
+                                                data: taskId,
+                                                feedback: provider.tasks[idx].is_fixed
+                                                    ? fixed_card(context, task, idx)
+                                                    : draggable_card(context, task, idx),
+                                                // 드래그하는 동안 보여줄 위젯
+                                                childWhenDragging: Opacity(
+                                                  opacity: 0.5,
+                                                  child: provider.tasks[idx].is_fixed
+                                                      ? fixed_card(context, task, idx)
+                                                      : draggable_card(context, task,
+                                                      idx), // 드래그할 때 원래 위치에 보여줄 위젯
+                                                ),
+                                                child: provider.tasks[idx].is_fixed
+                                                    ? fixed_card(context, task, idx)
+                                                    : draggable_card(context, task, idx),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    ),
+                                    if(provider.fixed_list.length-1 == index)
+                                      DragTarget<String>(
+                                        onAccept: (receivedTaskId) {
+                                          provider.moveDragToFixedAtLast(receivedTaskId);
+                                        },
+                                        builder: (BuildContext context, List<String?> candidateData, List<dynamic> rejectedData) {
+                                          return Divider(
+                                            color: candidateData.isNotEmpty ? Colors.orange : Colors.grey[100],
+                                            thickness: 4,
+                                            height: 5,
+                                          );
+                                        },
+                                      )
+
+                                  ],
+                                );
+                              });
+
+                  }),
+                ),
               ),
               Consumer<TaskViewModel>(
                   builder: (context, provider, child) {
                     //print(provider.draggable_list.length);
                   return Container(
-                    height: provider.draggable_list.length == 0 ? 0: (provider.draggable_list.length == 1 ? 73:150),
+                    height: provider.draggable_list.length == 0 ? 0: (provider.draggable_list.length == 1 ? 70:132),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
@@ -487,53 +539,61 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       color: AppColors.primary,
                       //color: Colors.white,
                     ),
-                    child: ListView.builder(
-                        itemCount: provider.draggable_list.length,
-                        // 항목의 수를 설정합니다.
-                        itemBuilder: (context, index) {
-                          return DragTarget<String>(
-                            onAccept: (receivedTaskId) {
-                              bool isInFixedList = provider.fixed_list
-                                  .contains(receivedTaskId);
-                              bool isInDraggableList = provider
-                                  .draggable_list
-                                  .contains(receivedTaskId);
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                      child: ListView.builder(
+                          itemCount: provider.draggable_list.length,
+                          // 항목의 수를 설정합니다.
+                          itemBuilder: (context, index) {
+                            return DragTarget<String>(
+                              onAccept: (receivedTaskId) {
+                                bool isInFixedList = provider.fixed_list
+                                    .contains(receivedTaskId);
+                                bool isInDraggableList = provider
+                                    .draggable_list
+                                    .contains(receivedTaskId);
 
-                              if (isInDraggableList) {
-                                // 같은 드래그 가능한 리스트 내에서 위치 변경
-                                provider.reorderTask(
-                                    receivedTaskId, index, false);
-                              } else if (isInFixedList) {
-                                // taskViewModel.moveTaskToList(
-                                //     receivedTaskId, index, false);
-                              }
-                            },
-                            builder: (context, candidateData, rejectedData) {
-                              int idx = provider
-                                  .findTask(provider.draggable_list[index]);
+                                if (isInDraggableList) {
+                                  // 같은 드래그 가능한 리스트 내에서 위치 변경
+                                  provider.reorderTask(
+                                      receivedTaskId, index, false);
+                                } else if (isInFixedList) {
+                                  // taskViewModel.moveTaskToList(
+                                  //     receivedTaskId, index, false);
+                                }
+                              },
+                              builder: (context, candidateData, rejectedData) {
+                                int idx = provider
+                                    .findTask(provider.draggable_list[index]);
 
-                              if (idx == -1) {
-                                // 유효하지 않은 인덱스일 경우 처리
-                                return SizedBox(); // 또는 다른 위젯 반환
-                              }
+                                if (idx == -1) {
+                                  // 유효하지 않은 인덱스일 경우 처리
+                                  return SizedBox(); // 또는 다른 위젯 반환
+                                }
 
-                              TaskModel task = provider.tasks[idx];
-                              String taskId = provider.draggable_list[index];
-                              return LongPressDraggable<String>(
-                                data: taskId,
-                                feedback: draggable_card(context, task, idx),
-                                // 드래그하는 동안 보여줄 위젯
-                                childWhenDragging: Opacity(
-                                  opacity: 0.5,
-                                  child: draggable_card(
-                                      context, task,
-                                      idx), // 드래그할 때 원래 위치에 보여줄 위젯
-                                ),
-                                child: draggable_card(context, task, idx),
-                              );
-                            },
-                          );
-                        }),
+                                TaskModel task = provider.tasks[idx];
+                                String taskId = provider.draggable_list[index];
+                                return LongPressDraggable<String>(
+                                  data: taskId,
+                                  feedback: draggable_card(context, task, idx),
+                                  // 드래그하는 동안 보여줄 위젯
+                                  childWhenDragging: Opacity(
+                                    opacity: 0.5,
+                                    child: draggable_card(
+                                        context, task,
+                                        idx), // 드래그할 때 원래 위치에 보여줄 위젯
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      draggable_card(context, task, idx),
+                                      SizedBox(height: 5,),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }),
+                    ),
                   );
 
               })
