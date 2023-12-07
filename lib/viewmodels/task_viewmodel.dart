@@ -176,6 +176,12 @@ class TaskViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void addFixedTask(String task_name, String location, String? day, String fixed_time) async {
+    await taskService.createFixedTask(task_name, location, day, fixed_time);
+    getFixedTime();
+
+  }
+
 
 
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../theme/colors.dart';
+import '../../viewmodels/task_viewmodel.dart';
 
 class AddFixedTaskScreen extends StatefulWidget {
   const AddFixedTaskScreen({Key? key}) : super(key: key);
@@ -63,12 +65,24 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final taskViewModel = Provider.of<TaskViewModel>(context);
     return Scaffold(
       appBar: AppBar(
+        title: Text('Add fixed time \u{1F525}', style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),),
         actions: [
           TextButton(
               onPressed: (){
-
+                if (_formKey.currentState!.validate()) {
+                  taskViewModel.addFixedTask(_task_controller.text, _location_controller.text,selectedDay, formatDurationHHMM(startTime)+ ' ~ ' + formatDurationHHMM(endTime));
+                  // 유효성 검사를 통과하면 다음 동작을 수행합니다.
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Successfully added! \u{1F525}')),
+                  );
+                  Navigator.pop(context);
+                }
               },
               child: Text('Add', style: TextStyle(
                 color: AppColors.primary,
@@ -83,6 +97,7 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
           key: _formKey,
           child: Column(
             children: [
+              SizedBox(height: 60,),
               Text('Type your Task and Emoji', style: TextStyle(fontWeight: FontWeight.bold),),
               SizedBox(height: 8,),
               TextFormField(
@@ -115,7 +130,7 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
               SizedBox(height: 8,),
               TextFormField(
                 autofocus: true,
-                controller:_task_controller,
+                controller:_location_controller,
                 cursorColor: AppColors.primary,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -131,7 +146,7 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Type your task and emoji';
+                    return 'Type the location';
                   }
                   return null;
                 },
@@ -139,7 +154,7 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
 
 
           SizedBox(height: 30,),
-              Text('Select the day \u{1F525}', style: TextStyle(fontWeight: FontWeight.bold),),
+              Text('Select the day \u{1F5D3}', style: TextStyle(fontWeight: FontWeight.bold),),
               SizedBox(height: 8,),
           Center(
             child: Wrap(

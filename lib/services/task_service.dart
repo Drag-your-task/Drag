@@ -199,15 +199,28 @@ class TaskService {
     //querySnapshot = await _firestore.collection('/calendar/ 0U1fvPHkXVXUg9AQyduBOGzUim83/task').get();
 
     List<List<TaskModel>> tasks = [];
-    tasks.addAll(await reference.collection('mon').get().then((value) => [makeDocsToList(value)]));
-    tasks.addAll(await reference.collection('tue').get().then((value) => [makeDocsToList(value)]));
-    tasks.addAll(await reference.collection('wed').get().then((value) => [makeDocsToList(value)]));
-    tasks.addAll(await reference.collection('thu').get().then((value) => [makeDocsToList(value)]));
-    tasks.addAll(await reference.collection('fri').get().then((value) => [makeDocsToList(value)]));
-    tasks.addAll(await reference.collection('sat').get().then((value) => [makeDocsToList(value)]));
-    tasks.addAll(await reference.collection('sun').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Mon').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Tue').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Wed').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Thu').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Fri').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Sat').get().then((value) => [makeDocsToList(value)]));
+    tasks.addAll(await reference.collection('Sun').get().then((value) => [makeDocsToList(value)]));
 
     return tasks;
+  }
+
+  Future<void> createFixedTask(task_name, location, day, String fixed_time) async {
+    DocumentReference new_task_doc_ref = await _firestore.collection('user').doc(_firebaseAuth.currentUser?.uid).collection('fixed_time').doc('tasks').collection(day).doc();
+
+    new_task_doc_ref.set({
+      'doc_id': new_task_doc_ref.id,
+      'is_fixed': true,
+      'task_name': task_name,
+      'location': location,
+      'fixed_time': fixed_time,
+      'is_checked': false,
+    });
   }
 
 

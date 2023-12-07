@@ -63,6 +63,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final taskViewModel = Provider.of<TaskViewModel>(context);
     return Scaffold(
       appBar: AppBar(
+        title: Text('Add new task \u{1F525}', style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),),
         actions: [
           TextButton(
               onPressed: (){
