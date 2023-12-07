@@ -161,7 +161,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   : TextDecoration.none,
                             ),
                           ),
-                          width: MediaQuery.of(context).size.width / 2 - 87,
+                          width: MediaQuery.of(context).size.width - 93,
                         ),
                         Text(
                           task.location.toString() ?? '',
@@ -246,7 +246,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   : TextDecoration.none,
                             ),
                           ),
-                          width: MediaQuery.of(context).size.width / 2 - 87,
+                          width: MediaQuery.of(context).size.width - 93,
                         ),
                         Text(
                           '~ ' + formatDateTime(task.end_date!).substring(0,11),
@@ -425,16 +425,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   .draggable_list
                                   .contains(receivedTaskId);
 
-                              if (isInDraggableList) {
-                                provider.moveTaskToList(
-                                    receivedTaskId, 0, true);
-                              }
+                                if (isInDraggableList) {
+                                  provider.moveTaskToList(
+                                      receivedTaskId, 0, true);
+                                }
+
                             },
                             builder: (BuildContext context, List<String?> candidateData, List<dynamic> rejectedData) {
-                              return Divider(
-                                color: candidateData.isNotEmpty ? Colors.orange : Colors.grey[100],
-                                thickness: 4,
-                                height: 50,
+                              return Container(
+                                alignment: Alignment.topCenter,
+                                height: 100,
+                                child: Divider(
+                                  color: candidateData.isNotEmpty ? AppColors.primary : Colors.grey[100],
+                                  thickness: 4,
+                                ),
                               );
                             },
                           );
@@ -480,7 +484,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           child: Column(
                                             children: [
                                               Divider(
-                                                color: candidateData.isNotEmpty ? Colors.orange : Colors.grey[100],
+                                                color: candidateData.isNotEmpty ? AppColors.primary : Colors.grey[100],
                                                 thickness: 4,
                                                 height: 5,
                                               ),
@@ -508,14 +512,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     ),
                                     if(provider.fixed_list.length-1 == index)
                                       DragTarget<String>(
+                                        onWillAccept: (receivedTaskId) {
+                                          // 마지막 Divider로 드래그하는 경우는 동일 리스트 내 드래그를 허용하지 않음
+                                          if (provider.fixed_list.contains(receivedTaskId)) {
+                                            return false; // 동일 리스트 내 드래그 방지
+                                          }
+                                          return true; // 다른 리스트에서 드래그 허용
+                                        },
                                         onAccept: (receivedTaskId) {
                                           provider.moveDragToFixedAtLast(receivedTaskId);
                                         },
                                         builder: (BuildContext context, List<String?> candidateData, List<dynamic> rejectedData) {
-                                          return Divider(
-                                            color: candidateData.isNotEmpty ? Colors.orange : Colors.grey[100],
-                                            thickness: 4,
-                                            height: 5,
+                                          return Container(
+                                            alignment: Alignment.topCenter,
+                                            height: 50,
+                                            child: Divider(
+                                              color: candidateData.isNotEmpty ? AppColors.primary : Colors.grey[100],
+                                              thickness: 4,
+                                            ),
                                           );
                                         },
                                       )
