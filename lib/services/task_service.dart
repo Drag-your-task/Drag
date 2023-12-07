@@ -223,5 +223,39 @@ class TaskService {
     });
   }
 
+  Future<void> fetchFiexedTimeTasks(DateTime selectedDay, List<List<TaskModel>> fixed_timetable, List<String> fixed_list) async {
+    String day = formatDateTime(selectedDay);
+    String day_name = weekdays[selectedDay.weekday - 1];
+    List<TaskModel> fixed_tasks = fixed_timetable[selectedDay.weekday - 1];
+
+    for(int i=0; i<fixed_tasks.length; i++){
+      DocumentReference new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc();
+
+      await new_task_doc_ref.set({
+        'doc_id' : new_task_doc_ref.id,
+        'is_fixed' : fixed_tasks[i].is_fixed,
+        'task_name' : fixed_tasks[i].task_name,
+        'is_checked' : fixed_tasks[i].is_checked,
+        'fixed_time' : fixed_tasks[i].fixed_time,
+        'task_name' : fixed_tasks[i].task_name,
+      });
+
+      fixed_list.add(new_task_doc_ref.id);
+
+    }
+
+    if(fixed_tasks.length == fixed_list.length){
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').set({
+        'order': fixed_list,
+      });
+    }
+    else{
+      await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').update({
+        'order': fixed_list,
+      });
+    }
+
+  }
+
 
 }

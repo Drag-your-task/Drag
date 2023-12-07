@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme/colors.dart';
+import '../../utils/uil.dart';
 import '../../viewmodels/task_viewmodel.dart';
 
 class AddFixedTaskScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
   final TextEditingController _location_controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
   String? selectedDay = 'Mon';
 
   @override
@@ -68,7 +69,7 @@ class _AddFixedTaskScreenState extends State<AddFixedTaskScreen> {
     final taskViewModel = Provider.of<TaskViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add fixed time \u{1F525}', style: TextStyle(
+        title: Text('Add fixed task \u{1F525}', style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,
         ),),

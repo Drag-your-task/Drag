@@ -182,6 +182,11 @@ class TaskViewModel with ChangeNotifier {
 
   }
 
+  Future<void> fetchFiexedTimeTasks() async {
+    await taskService.fetchFiexedTimeTasks(selectedDay, fixed_timetable, fixed_list);
+    _loadInitialData();
+  }
+
 
 
 }

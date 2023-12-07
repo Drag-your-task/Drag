@@ -85,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Fixed Time', style: TextStyle(fontWeight: FontWeight.bold),),
+                    Text('Fixed Tasks', style: TextStyle(fontWeight: FontWeight.bold),),
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> AddFixedTaskScreen()));
 

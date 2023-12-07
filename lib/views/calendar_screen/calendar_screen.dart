@@ -404,21 +404,32 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-   // final taskViewModel = Provider.of<TaskViewModel>(context);
+   final taskViewModel = Provider.of<TaskViewModel>(context);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(color: Colors.white, child: _buildCalendar(context)),
         SizedBox(
-          height: 5,
+          height: 3,
         ),
+        Container(
+          height: 35,
+            child: TextButton(onPressed: (){
+              taskViewModel.fetchFiexedTimeTasks();
+            }, child: Text('Fetch fixed tasks',
+                  style: TextStyle(color: AppColors.primary),
+            ),)
+        ),
+
+
         Expanded(
           child: Column(
             children: [
               Expanded(
                 child: Container(
                   alignment: Alignment.topCenter,
-                  margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: Consumer<TaskViewModel>(
                       builder: (context, provider, child) {
                         if(provider.fixed_list.length == 0){
