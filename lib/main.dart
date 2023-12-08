@@ -3,6 +3,7 @@ import 'package:drag/viewmodels/auth_viewmodel.dart';
 import 'package:drag/viewmodels/task_viewmodel.dart';
 import 'package:drag/views/auth_screen/auth_screen.dart';
 import 'package:drag/views/home_screen.dart';
+import 'package:drag/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: AppTheme.lightTheme,
         // darkTheme: AppTheme.darkTheme,
-        home: AuthScreen(),
+        home: SplashScreen(),
       ),
     );
   }
