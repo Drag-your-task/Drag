@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:drag/models/task_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../utils/parsing_tasks.dart';
 import '../utils/uil.dart';
 
 
@@ -101,6 +104,10 @@ class TaskService {
         'is_checked' : false,
         'start_date' : start_date,
         'end_date' : end_date,
+      });
+
+      _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).set({
+        'day': day,
       });
 
       List<String> tasks = await getDraggableList(day);
@@ -237,12 +244,16 @@ class TaskService {
         'task_name' : fixed_tasks[i].task_name,
         'is_checked' : fixed_tasks[i].is_checked,
         'fixed_time' : fixed_tasks[i].fixed_time,
-        'task_name' : fixed_tasks[i].task_name,
+        'location': fixed_tasks[i].location,
       });
 
       fixed_list.add(new_task_doc_ref.id);
 
     }
+
+    _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).set({
+      'day': day,
+    });
 
     if(fixed_tasks.length == fixed_list.length){
       await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('fixed_list').doc('order').set({
@@ -256,6 +267,35 @@ class TaskService {
     }
 
   }
+
+  Future<String> getThisMonthTasks(String thisMonth) async {
+    String tasks = '';
+    QuerySnapshot querySnapshot = await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid)
+        .collection('day').where('day', isGreaterThan: thisMonth).get();
+
+    print(querySnapshot.docs.length);
+    for (var doc in querySnapshot.docs) {
+      String documentId = doc.id;
+
+      QuerySnapshot subCollectionSnapshot = await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(_firebaseAuth.currentUser?.uid)
+          .collection('day')
+          .doc(documentId)
+          .collection('task')
+          .get();
+
+      for(var subdoc in subCollectionSnapshot.docs){
+        var data = subdoc.data() as Map<String, dynamic>?;
+        tasks += data?['task_name'] + "\n";
+      }
+    }
+
+    print(tasks);
+    print(extractWordsAndCount(tasks));
+    return tasks; // 최종 결과 문자열을 반환
+  }
+
 
 
 }

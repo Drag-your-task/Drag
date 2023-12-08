@@ -28,6 +28,7 @@ class TaskViewModel with ChangeNotifier {
     // print("day: "+formatDateTime(selectedDay));
     _loadInitialData();
     getFixedTime();
+    drawWordCloud();
   }
 
 
@@ -187,6 +188,12 @@ class TaskViewModel with ChangeNotifier {
     _loadInitialData();
   }
 
+  Future<String> drawWordCloud(){
+    DateTime now = DateTime.now();
+    String thisMonth = now.year.toString() + '.' + now.month.toString();
+    print(thisMonth);
+    return taskService.getThisMonthTasks(thisMonth);
+  }
 
 
 }
