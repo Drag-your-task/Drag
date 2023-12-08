@@ -10,16 +10,20 @@ class AuthViewModel with ChangeNotifier {
 
   UserModel? _user;
 
+  UserModel getUser (){
+    return _user!;
+  }
+
   void signWithGoogle() async {
     try {
       final userCredential = await _service.signInWithGoogle();
       if(userCredential.user != null){
-        _user = await _service.fetchUser(userCredential.user!.uid);
+        _user = await _service.fetchUser();
 
         if(_user == null){
           //새로 가입한 것이기 때문에 등록하고
           _service.registerUser(userCredential);
-          _user = await _service.fetchUser(userCredential.user!.uid);
+          _user = await _service.fetchUser();
         }
         else{
           notifyListeners();
@@ -38,8 +42,11 @@ class AuthViewModel with ChangeNotifier {
     _service.signOutWithGoogle();
   }
 
-  void registerWithEmail(String email, String password){
-    _service.registerWithEmailPassword(email,password);
+  Future<void> registerWithEmail(String email, String password) async {
+
+    _user = await _service.registerWithEmailPassword(email,password);
+    notifyListeners();
+    print(_user);
   }
 
 
@@ -48,8 +55,13 @@ class AuthViewModel with ChangeNotifier {
     return _service.isEmailAlreadyInUse(email);
   }
 
-  Future<bool> signInWithEmailPassword(String email, String password){
-    return _service.signInWithEmailPassword(email, password);
+  Future<bool> signInWithEmailPassword(String email, String password) async {
+    bool status = await _service.signInWithEmailPassword(email, password);
+    _user = await _service.fetchUser();
+    notifyListeners();
+    print(_user?.imageUrl ?? 'no uid');
+    print(_user);
+    return status;
   }
 
   Future<String?> getUserProfilePictureUrl() async{
@@ -71,6 +83,14 @@ class AuthViewModel with ChangeNotifier {
       print("Error getting profile picture URL: $e");
       return null;
     }
+  }
+
+  Future<void> modifyUser(String imageUrl, String name) async {
+    print(imageUrl);
+    await _service.modifyUser(imageUrl,name, _user!);
+    _user = await _service.fetchUser();
+    print(_user?.name);
+    notifyListeners();
   }
 
 }

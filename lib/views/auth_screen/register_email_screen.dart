@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../theme/colors.dart';
 import '../../viewmodels/auth_viewmodel.dart';
+import '../profile_screen/profile_edit_screen.dart';
 
 class RegisterEmailScreen extends StatefulWidget {
   const RegisterEmailScreen({Key? key}) : super(key: key);
@@ -214,7 +215,8 @@ class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
                           SnackBar(content: Text('Successfully registered! \u{1F525}')),
                         );
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>AuthScreen()));
+                        bool afterRegister = true;
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditPofileScreen(afterRegister)));
                       }
 
                     },

@@ -1,11 +1,14 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user_model.dart';
 
 class AuthService {
+  final FirebaseStorage storage = FirebaseStorage.instance;
 
 
   Future<UserCredential> signInWithGoogle() async {
@@ -24,8 +27,8 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<UserModel?> fetchUser(String uid) async {
-    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance.collection('user').doc(uid).get();
+  Future<UserModel?> fetchUser() async {
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance.collection('user').doc(FirebaseAuth.instance.currentUser?.uid).get();
 
     if (docSnapshot.exists && docSnapshot.data() != null) {
       Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
@@ -65,18 +68,19 @@ class AuthService {
     if (credential.user != null) {
       await FirebaseFirestore.instance.collection('user').doc(credential.user!.uid).set({
         'uid': credential.user!.uid,
-        'user_name': credential.user!.displayName,
+        'user_name': credential.user?.displayName ?? 'drag_user' ,
         'email': credential.user!.email,
-        'imageUrl': credential.user!.photoURL,
+        'imageUrl': credential.user?.photoURL ?? 'https://github.com/Drag-your-task/Drag/blob/main/assets/icons/grab_icon/grab_app_icon.png?raw=true',
       });
     }
   }
 
-  void registerWithEmailPassword(String email, String password) async {
+  Future<UserModel?> registerWithEmailPassword(String email, String password) async {
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       if (credential.user != null) {
         registerUser(credential);
+        return fetchUser();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -114,6 +118,38 @@ class AuthService {
       return 'Failed';
     }
   }
+
+  // 파일 이름을 안전하게 만드는 함수
+  String _sanitizeFileName(String name) {
+    return name.replaceAll(RegExp(r'[^\w]+'), '_');
+  }
+
+  Future<void> modifyUser(String imageUrl, String name, UserModel user) async {
+
+    try{
+      if(imageUrl != ''){
+        String? filePath = imageUrl;
+        String fileName = _sanitizeFileName(name);
+        final ref = storage.ref(fileName);
+        await ref.putFile(File(filePath!));
+        imageUrl = await ref.getDownloadURL();
+      }
+
+
+      await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
+        'user_name': name,
+        if(imageUrl != '')
+          'imageUrl': imageUrl,
+      });
+    }catch (e) {
+      print('firebase storage error: $e');
+    }
+
+
+
+
+  }
+
 
 
 }

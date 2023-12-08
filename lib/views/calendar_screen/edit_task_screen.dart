@@ -79,7 +79,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 if (_formKey.currentState!.validate() && selectedDateRange != null) {
                   taskViewModel.editTask(widget.task, selectedDateRange!.start, selectedDateRange!.end, _task_controller.text, beforeSelectedDateRange!.start, beforeSelectedDateRange!.end);
                   // 유효성 검사를 통과하면 다음 동작을 수행합니다.
-                  print('hehe');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Successfully added your task! \u{1F525}')),
                   );

@@ -91,72 +91,79 @@ class ProfileScreen extends StatelessWidget {
 
                   Consumer<TaskViewModel>(
                     builder: (BuildContext context, TaskViewModel taskViewModel, Widget? child) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              for(int i=0; i<7; i++)
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: 100,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(day[i],),
-                                      SizedBox(height: 10,),
-                                      for(int j=0; j<taskViewModel.fixed_timetable[i].length; j++)
-                                        Column(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.all(5),
-                                              padding: EdgeInsets.all(5),
-                                              height: 70,
-                                              width: 100,
-                                              decoration: BoxDecoration(
-                                                color: AppColors.secondary,
-                                                borderRadius: BorderRadius.circular(6.0),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey.withOpacity(0.3), // 그림자 색상 및 투명도
-                                                    spreadRadius: 0.5, // 그림자의 확산 정도
-                                                    blurRadius: 3, // 그림자의 흐림 정도
-                                                    offset: Offset(0, 0.5), // 그림자의 위치 변경
-                                                  ),
-                                                ],
-                                              ),
+                      if (taskViewModel.isLoading) {
+                        // 데이터 로딩 중
+                        return Image.asset('assets/icons/progress_icon.gif', width: 50,);
+                      } else {
+                        // 데이터 로드 완료
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                for(int i=0; i<7; i++)
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 100,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(day[i],),
+                                        SizedBox(height: 10,),
+                                        for(int j=0; j<taskViewModel.fixed_timetable[i].length; j++)
+                                          Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.all(5),
+                                                padding: EdgeInsets.all(5),
+                                                height: 70,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.secondary,
+                                                  borderRadius: BorderRadius.circular(6.0),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey.withOpacity(0.3), // 그림자 색상 및 투명도
+                                                      spreadRadius: 0.5, // 그림자의 확산 정도
+                                                      blurRadius: 3, // 그림자의 흐림 정도
+                                                      offset: Offset(0, 0.5), // 그림자의 위치 변경
+                                                    ),
+                                                  ],
+                                                ),
 
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Text(taskViewModel.fixed_timetable[i][j].fixed_time!, style: TextStyle(fontSize: 9,color: AppColors.primary, fontWeight: FontWeight.bold),),
-                                                      SizedBox(height: 5,),
-                                                      Container(
-                                                        width: 90,
-                                                          alignment: Alignment.center,
-                                                          child: Text(taskViewModel.fixed_timetable[i][j].task_name, maxLines: 2, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis ),)
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Text(taskViewModel.fixed_timetable[i][j].location!, style: TextStyle(fontSize: 8,),),
-                                                ],
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Text(taskViewModel.fixed_timetable[i][j].fixed_time!, style: TextStyle(fontSize: 9,color: AppColors.primary, fontWeight: FontWeight.bold),),
+                                                        SizedBox(height: 5,),
+                                                        Container(
+                                                            width: 90,
+                                                            alignment: Alignment.center,
+                                                            child: Text(taskViewModel.fixed_timetable[i][j].task_name, maxLines: 2, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis ),)
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Text(taskViewModel.fixed_timetable[i][j].location!, style: TextStyle(fontSize: 8,),),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(height: 10,),
-                                          ],
-                                        )
-                                    ],
-                                  ),
-                                )
-                            ],
+                                              SizedBox(height: 10,),
+                                            ],
+                                          )
+                                      ],
+                                    ),
+                                  )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
+
                     },
 
                   )
@@ -185,12 +192,11 @@ class _ProfileImageState extends State<ProfileImage> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context)=> EditPofileScreen()),
+          MaterialPageRoute(builder: (context)=> EditPofileScreen(false)),
         );
       },
       child: FutureBuilder(
-        future: Provider.of<AuthViewModel>(context)
-            .getUserProfilePictureUrl(),
+        future: Provider.of<AuthViewModel>(context).getUserProfilePictureUrl(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // or any loading indicator
@@ -202,6 +208,7 @@ class _ProfileImageState extends State<ProfileImage> {
             return Container(
               //padding: EdgeInsets.all(4), // 테두리와 이미지 사이의 여백
               decoration: BoxDecoration(
+                color: AppColors.primary,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: AppColors.primary, // 테두리 색상
@@ -210,6 +217,7 @@ class _ProfileImageState extends State<ProfileImage> {
               ),
               child: CircleAvatar(
                 radius: 50,
+                backgroundColor: AppColors.primary,
                 backgroundImage: profilePictureUrl != null
                     ? NetworkImage(profilePictureUrl)
                     : NetworkImage(
@@ -219,6 +227,7 @@ class _ProfileImageState extends State<ProfileImage> {
           }
         },
       ),
+
     );
   }
 }

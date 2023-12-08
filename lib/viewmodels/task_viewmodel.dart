@@ -9,6 +9,9 @@ class TaskViewModel with ChangeNotifier {
 
   final TaskService taskService = TaskService();
 
+  bool isLoading = true;
+
+
   List<TaskModel> tasks = [];
   List<String> fixed_list = [];
   List<String> draggable_list = [];
@@ -183,6 +186,7 @@ class TaskViewModel with ChangeNotifier {
         fixed_timetable = value;
       }
     });
+    isLoading = false;
     notifyListeners();
   }
 
@@ -200,7 +204,6 @@ class TaskViewModel with ChangeNotifier {
   Future<String> drawWordCloud(){
     DateTime now = DateTime.now();
     String thisMonth = now.year.toString() + '.' + now.month.toString();
-    print(thisMonth);
     return taskService.getThisMonthTasks(thisMonth);
   }
 
