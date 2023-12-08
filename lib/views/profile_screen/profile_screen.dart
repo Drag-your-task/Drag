@@ -20,7 +20,9 @@ class ProfileScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
       children: [
+        SizedBox(height:30),
         ProfileImage(),
+        SizedBox(height:30),
         Container(
           margin: EdgeInsets.all(20),
           height: 300,

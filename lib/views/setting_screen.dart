@@ -38,6 +38,7 @@ class SettingScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('Settings', style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,
