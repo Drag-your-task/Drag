@@ -24,8 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Image.asset('assets/img/checked.png', width: 100,), // 여기에 로고나 이미지를 넣을 수 있습니다.
+      body: Container(
+        color: Colors.white,
+        child: Center(
+          child: Image.asset('assets/img/checked.png', width: 100,), // 여기에 로고나 이미지를 넣을 수 있습니다.
+        ),
       ),
     );
   }
