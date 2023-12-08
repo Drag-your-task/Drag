@@ -52,4 +52,25 @@ class AuthViewModel with ChangeNotifier {
     return _service.signInWithEmailPassword(email, password);
   }
 
+  Future<String?> getUserProfilePictureUrl() async{
+    try{
+      //User? user = _auth.currentUser;
+      // if(_user == null){
+      //   String? profilePictureUrl = await FirebaseFirestore.instance
+      //       .collection('user')
+      //       .doc(_auth.currentUser!.uid)
+      //       .get()
+      //       .then((documentSnapshot) => documentSnapshot.data()?['imageUrl']);
+      //   return profilePictureUrl;
+      // }
+      // else{
+      //   return _user!.imageUrl;
+      // }
+      return _user!.imageUrl;
+    } catch(e){
+      print("Error getting profile picture URL: $e");
+      return null;
+    }
+  }
+
 }

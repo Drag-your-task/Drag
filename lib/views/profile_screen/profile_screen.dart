@@ -1,9 +1,11 @@
 import 'package:drag/theme/colors.dart';
 import 'package:drag/viewmodels/task_viewmodel.dart';
+import 'package:drag/views/profile_screen/profile_edit_screen.dart';
 import 'package:drag/views/profile_screen/word_cloud_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../viewmodels/auth_viewmodel.dart';
 import '../home_screen.dart';
 import 'add_fixed_task_screen.dart';
 
@@ -18,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
       children: [
-        SizedBox(height: 30,),
+        ProfileImage(),
         Container(
           margin: EdgeInsets.all(20),
           height: 300,
@@ -167,3 +169,54 @@ class ProfileScreen extends StatelessWidget {
 }
 
 
+class ProfileImage extends StatefulWidget {
+  const ProfileImage({super.key});
+
+  @override
+  State<ProfileImage> createState() => _ProfileImageState();
+}
+
+class _ProfileImageState extends State<ProfileImage> {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context)=> EditPofileScreen()),
+        );
+      },
+      child: FutureBuilder(
+        future: Provider.of<AuthViewModel>(context)
+            .getUserProfilePictureUrl(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // or any loading indicator
+          } else if (snapshot.hasError) {
+            return Text("Error loading profile picture");
+          } else {
+            String? profilePictureUrl = snapshot.data;
+            print(profilePictureUrl);
+            return Container(
+              //padding: EdgeInsets.all(4), // 테두리와 이미지 사이의 여백
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.primary, // 테두리 색상
+                  width: 3, // 테두리 두께
+                ),
+              ),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: profilePictureUrl != null
+                    ? NetworkImage(profilePictureUrl)
+                    : NetworkImage(
+                    'https://github.com/Drag-your-task/Drag/blob/main/assets/icons/grab_icon/grab_app_icon.png?raw=true'),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
