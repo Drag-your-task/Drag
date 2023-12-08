@@ -183,7 +183,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   onTap: () {
                     int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
-                    _showBottomSheet(context, idx,differenceInDays);
+                    int remainDay = DateTime.now().difference(task.end_date!).inDays;
+                    _showBottomSheet(context, idx,differenceInDays, remainDay);
                   },
                 ),
               ],
@@ -269,7 +270,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   onTap: () {
                     int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
-                    _showBottomSheet(context, idx,differenceInDays);
+                    int remainDay = DateTime.now().difference(task.end_date!).inDays;
+                    _showBottomSheet(context, idx,differenceInDays,remainDay);
 
 
                   },
@@ -282,7 +284,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  void _showBottomSheet(BuildContext context, int idx, int? differenceInDays){
+  void _showBottomSheet(BuildContext context, int idx, int? differenceInDays, int remainDay){
     //final taskViewModel = Provider.of<TaskViewModel>(context);
 
     showModalBottomSheet(
@@ -371,7 +373,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             fontWeight: FontWeight.bold, fontSize: 20),),
 
                       if(differenceInDays != null)
-                        Text('D-' + differenceInDays.toString(), style: TextStyle(
+                        Text('D-' + remainDay.toString(), style: TextStyle(
                             fontSize: 100, color: AppColors.primary),),
 
 

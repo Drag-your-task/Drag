@@ -32,6 +32,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   @override
   void initState() {
     super.initState();
+    _task_controller.text = widget.task.task_name;
     selectedDateRange = DateTimeRange(start: widget.task.start_date!, end: widget.task.end_date!);
     beforeSelectedDateRange = selectedDateRange;
   }
