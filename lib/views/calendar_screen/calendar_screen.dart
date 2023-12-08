@@ -183,7 +183,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   onTap: () {
                     int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
-                    int remainDay = DateTime.now().difference(task.end_date!).inDays;
+                    DateTime now = DateTime.now();
+                    DateTime dateWithMidnightTime = DateTime(now.year, now.month, now.day);
+
+                    int remainDay = task.end_date!.difference(dateWithMidnightTime).inDays < 0 ? 0: task.end_date!.difference(dateWithMidnightTime).inDays ;
                     _showBottomSheet(context, idx,differenceInDays, remainDay);
                   },
                 ),
@@ -270,9 +273,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   onTap: () {
                     int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
-                    int remainDay = DateTime.now().difference(task.end_date!).inDays;
+                    DateTime now = DateTime.now();
+                    DateTime dateWithMidnightTime = DateTime(now.year, now.month, now.day);
+                    int remainDay = task.end_date!.difference(dateWithMidnightTime).inDays < 0 ? 0: task.end_date!.difference(dateWithMidnightTime).inDays ;
+                    print(dateWithMidnightTime);
                     _showBottomSheet(context, idx,differenceInDays,remainDay);
-
 
                   },
                 ),
