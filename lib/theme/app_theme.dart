@@ -22,10 +22,10 @@ class AppTheme {
           color: Colors.white,
         elevation: 0,
       ),
-      appBarTheme: AppBarTheme(
-        //color: Colors.white,
-        backgroundColor: Colors.white,
-      ),
+      // appBarTheme: AppBarTheme(
+      //   //color: Colors.white,
+      //   backgroundColor: Colors.white,
+      // ),
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: AppColors.primary,

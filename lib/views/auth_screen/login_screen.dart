@@ -181,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   OutlinedButton(
                       onPressed: (){
                         authViewModel.signWithGoogle();
+                        FocusScope.of(context).requestFocus(FocusNode());
                             //.then((user){
                         //                           print("google");
                         //                         }).catchError((error){
@@ -224,6 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       if (_formKey.currentState!.validate()) {
                         _signIn();
+                        FocusScope.of(context).requestFocus(FocusNode());
 
                       }
 

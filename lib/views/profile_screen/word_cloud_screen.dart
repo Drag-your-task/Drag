@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../utils/uil.dart';
 import '../../viewmodels/task_viewmodel.dart';
 
 
@@ -65,9 +66,12 @@ class _WordCloudScreenState extends State<WordCloudScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     final taskViewModel = Provider.of<TaskViewModel>(context);
+    String thisMonth = months[ DateTime.now().month -1];
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -75,7 +79,7 @@ class _WordCloudScreenState extends State<WordCloudScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Word Cloud - 2023 Dec',
+              'Word Cloud - 2023 '+ thisMonth,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Row(

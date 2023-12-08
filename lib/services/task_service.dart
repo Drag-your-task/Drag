@@ -90,15 +90,22 @@ class TaskService {
 
   Future<void> createTask(DateTime start_date, DateTime end_date, String task_name) async {
     int differenceInDays = end_date.difference(start_date).inDays;
-
+    late DocumentReference new_task_doc_ref;
+    String id = '';
 
     for(int i=0; i<=differenceInDays; i++){
       String day = formatDateTime(start_date.add(Duration(days: i)));
       print(day);
-      DocumentReference new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc();
+      if(i==0){
+        new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc();
+        id = new_task_doc_ref.id;
+      }
+      else{
+        new_task_doc_ref = _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(id);
+      }
 
       await new_task_doc_ref.set({
-        'doc_id' : new_task_doc_ref.id,
+        'doc_id' : id,
         'is_fixed' : false,
         'task_name' : task_name,
         'is_checked' : false,
@@ -119,9 +126,7 @@ class TaskService {
   }
 
   Future<void> updateTask(DateTime start_date, DateTime end_date, String task_name) async {
-    //선택한 날만 고칠지
-    //선택한 날부터 이후날짜가 있으면 고칠지 - 그러면, 기존 날짜 부분 삭제해야 하는지
-    //어떻게 하지..?
+
     int differenceInDays = end_date.difference(start_date).inDays;
 
     // await _firestore.collection('calendar').doc(_firebaseAuth.currentUser?.uid).collection('day').doc(day).collection('task').doc(doc_id).update({
@@ -293,6 +298,10 @@ class TaskService {
 
     print(tasks);
     print(extractWordsAndCount(tasks));
+    if(tasks == ''){
+      int month = DateTime.now().month;
+      tasks = months[month-1];
+    }
     return tasks; // 최종 결과 문자열을 반환
   }
 

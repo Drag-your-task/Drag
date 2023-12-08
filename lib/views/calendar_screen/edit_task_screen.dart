@@ -21,6 +21,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   DateTimeRange? selectedDateRange;
   final TextEditingController _task_controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  DateTimeRange? beforeSelectedDateRange;
+
 
   @override
   void dispose() {
@@ -30,9 +32,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   @override
   void initState() {
     super.initState();
-
-    _task_controller.text = widget.task.task_name;
     selectedDateRange = DateTimeRange(start: widget.task.start_date!, end: widget.task.end_date!);
+    beforeSelectedDateRange = selectedDateRange;
   }
 
 
@@ -75,8 +76,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           TextButton(
               onPressed: (){
                 if (_formKey.currentState!.validate() && selectedDateRange != null) {
-                  taskViewModel.addTask(selectedDateRange!.start, selectedDateRange!.end, _task_controller.text);
+                  taskViewModel.editTask(widget.task, selectedDateRange!.start, selectedDateRange!.end, _task_controller.text, beforeSelectedDateRange!.start, beforeSelectedDateRange!.end);
                   // 유효성 검사를 통과하면 다음 동작을 수행합니다.
+                  print('hehe');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Successfully added your task! \u{1F525}')),
                   );

@@ -116,8 +116,17 @@ class TaskViewModel with ChangeNotifier {
     _loadInitialData();
   }
 
-  void editTask(DateTime start_date, DateTime end_date, String task_name){
-
+  void editTask(TaskModel task, DateTime start_date, DateTime end_date, String task_name, DateTime start, DateTime end){
+    int differenceInDays = end.difference(start).inDays;
+    print('visit');
+    //해당 날짜를 받아와서 거기 밑에 task를 없애고, 다시 추가해준다.
+    for(int i=0; i<=differenceInDays; i++){
+      bool isInFixedList = fixed_list.contains(task.doc_id);
+      // print('visit');
+      // print(formatDateTime(start.add(Duration(days: i))));
+      deleteTask(isInFixedList, start.add(Duration(days: i)), task.doc_id);
+    }
+    addTask(start_date, end_date, task_name);
   }
 
   Future<void> deleteTask(bool isInFixedList, DateTime day, String doc_id) async {

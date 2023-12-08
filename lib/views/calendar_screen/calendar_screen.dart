@@ -288,9 +288,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
+        shape: const RoundedRectangleBorder(  // 모달 바텀 시트의 모서리를 둥글게 만듭니다.
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+        ),
         builder: (BuildContext bc){
           return Container(
-            color: Colors.white,
+
+            decoration: const BoxDecoration(
+              color: Colors.white,// 모달 바텀 시트의 모서리를 둥글게 만듭니다.
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
+            ),
             padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
             height: MediaQuery.of(bc).size.height * 0.8,
             width: MediaQuery.of(bc).size.width,
@@ -298,13 +311,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 builder: (BuildContext context, TaskViewModel value, Widget? child) {
                   return Column(
                     children: [
-                      // SizedBox(height: 50,),
+                      SizedBox(height: 50,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
                               onPressed: () {
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -317,12 +331,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     .of(context)
                                     .size
                                     .width / 2 - 100,
-                                height: 70,
-                                child: Column(
+                                height: 50,
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('\u{270D}'),
-                                    Text('Edit'),
+                                    Icon(CupertinoIcons.pencil),
+                                    Text('  Edit'),
                                   ],
                                 ),
                               )),
@@ -339,12 +353,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               child: Container(
                                 // alignment: Alignment.center,
                                 width: MediaQuery.of(context).size.width / 2 - 100,
-                                height: 70,
-                                child: Column(
+                                height: 50,
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('\u{1F5D1}'),
-                                    Text('Delete'),
+                                    Icon(CupertinoIcons.delete_solid, size: 17,),
+                                    Text('  Delete'),
                                   ],
                                 ),
                               )),
@@ -376,6 +390,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       if(value.tasks[idx].is_fixed == true)
                         Column(
                           children: [
+                            SizedBox(height: 20,),
                             Text(value.tasks[idx].fixed_time.toString()),
                             Text(value.tasks[idx].location.toString()),
                           ],
