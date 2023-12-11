@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:drag/views/auth_screen/auth_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,11 +24,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Image.asset('assets/img/checked.png', width: 100,), // 여기에 로고나 이미지를 넣을 수 있습니다.
+    return Center(
+      child: ConstrainedBox(
+        constraints: kIsWeb? BoxConstraints(maxWidth: 400): BoxConstraints(maxWidth: MediaQuery.of(context).size.width), // 원하는 최대 너비 설정
+        child: Scaffold(
+          body: Container(
+            color: Colors.white,
+            child: Center(
+              child: Image.asset('assets/img/checked.png', width: 100,), // 여기에 로고나 이미지를 넣을 수 있습니다.
+            ),
+          ),
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import '../theme/colors.dart';
 import 'calendar_screen/add_task_screen.dart';
 import 'calendar_screen/calendar_screen.dart';
+import 'package:flutter/foundation.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -61,63 +62,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(35),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          leading: Image.asset("assets/icons/grab_icon/grab_app_icon.png", height: 10,),
-          actions: [
-            // IconButton(
-            //   onPressed: () {  },
-            //   icon: Icon(CupertinoIcons.bell, size: 20,),
-            // ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen() ));
-              },
-              icon: Icon(CupertinoIcons.ellipsis_circle, size: 20,),
+    return Center(
+      child: ConstrainedBox(
+        constraints: kIsWeb? BoxConstraints(maxWidth: 400): BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(35),
+            child: AppBar(
+              backgroundColor: Colors.white,
+              leading: Image.asset("assets/icons/grab_icon/grab_app_icon.png", height: 10,),
+              actions: [
+                // IconButton(
+                //   onPressed: () {  },
+                //   icon: Icon(CupertinoIcons.bell, size: 20,),
+                // ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen() ));
+                  },
+                  icon: Icon(CupertinoIcons.ellipsis_circle, size: 20,),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-      body: Container(
-          color: _selectedIndex == 1 ? Colors.white:Colors.grey[100],
-          child: _getPage(_selectedIndex),
+          ),
+          body: Container(
+              color: _selectedIndex == 1 ? Colors.white:Colors.grey[100],
+              child: _getPage(_selectedIndex),
 
-      ), // 현재 선택된 탭의 페이지를 표시합니다.
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //_showBottomSheet(context);
+          ), // 현재 선택된 탭의 페이지를 표시합니다.
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              //_showBottomSheet(context);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddTaskScreen()),
-          );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddTaskScreen()),
+              );
 
-        },
-        child: Icon(Icons.add, size: 30,),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        //notchMargin: 6.0,
-        height: 58,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _buildTabItem(
-              icon: CupertinoIcons.calendar,
-              text: 'calendar',
-              index: 0,
+            },
+            child: Icon(Icons.add, size: 30,),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            //notchMargin: 6.0,
+            height: 58,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                _buildTabItem(
+                  icon: CupertinoIcons.calendar,
+                  text: 'calendar',
+                  index: 0,
+                ),
+                SizedBox(width: 48), // FloatingActionButton의 공간을 비워두기 위함
+                _buildTabItem(
+                  icon: CupertinoIcons.person,
+                  text: 'profile',
+                  index: 1,
+                ),
+              ],
             ),
-            SizedBox(width: 48), // FloatingActionButton의 공간을 비워두기 위함
-            _buildTabItem(
-              icon: CupertinoIcons.person,
-              text: 'profile',
-              index: 1,
-            ),
-          ],
+          ),
         ),
       ),
     );

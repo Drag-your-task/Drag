@@ -1,10 +1,12 @@
 import 'package:drag/theme/app_theme.dart';
+import 'package:drag/utils/firebase_options_web.dart';
 import 'package:drag/viewmodels/auth_viewmodel.dart';
 import 'package:drag/viewmodels/task_viewmodel.dart';
 import 'package:drag/views/auth_screen/auth_screen.dart';
 import 'package:drag/views/home_screen.dart';
 import 'package:drag/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +14,13 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    // 웹용 Firebase 초기화 옵션
+    options();
+  } else {
+    // 모바일용 Firebase 자동 초기화
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 

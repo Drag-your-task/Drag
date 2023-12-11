@@ -2,6 +2,7 @@ import 'package:drag/models/task_model.dart';
 import 'package:drag/theme/colors.dart';
 import 'package:drag/viewmodels/task_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -161,7 +162,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   : TextDecoration.none,
                             ),
                           ),
-                          width: MediaQuery.of(context).size.width - 93,
+                          //width: MediaQuery.of(context).size.width - 93,
+                          constraints: kIsWeb? BoxConstraints(maxWidth: 400 -93): BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 93),
                         ),
                         Text(
                           task.location.toString() ?? '',
@@ -185,9 +187,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
                     DateTime now = DateTime.now();
                     DateTime dateWithMidnightTime = DateTime(now.year, now.month, now.day);
-
                     int remainDay = task.end_date!.difference(dateWithMidnightTime).inDays < 0 ? 0: task.end_date!.difference(dateWithMidnightTime).inDays ;
-                    _showBottomSheet(context, idx,differenceInDays, remainDay);
+                    print(dateWithMidnightTime);
+                    _showBottomSheet(context, idx,differenceInDays,remainDay);
                   },
                 ),
               ],
@@ -244,13 +246,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
-                              overflow: TextOverflow.ellipsis,
+                              //overflow: TextOverflow.ellipsis,
                               decoration: (task.is_checked == true)
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
                             ),
                           ),
-                          width: MediaQuery.of(context).size.width - 93,
+                          //width: MediaQuery.of(context).size.width - 93,
+                          constraints: kIsWeb? BoxConstraints(maxWidth: 400 -93): BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 93),
                         ),
                         Text(
                           '~ ' + formatDateTime(task.end_date!).substring(0,11),
