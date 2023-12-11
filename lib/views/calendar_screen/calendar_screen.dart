@@ -163,7 +163,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             ),
                           ),
                           //width: MediaQuery.of(context).size.width - 93,
-                          constraints: kIsWeb? BoxConstraints(maxWidth: 400 -93): BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 93),
+                          constraints: kIsWeb? BoxConstraints(maxWidth: 400 -93, minWidth:400 -93): BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 93, minWidth: MediaQuery.of(context).size.width - 93),
                         ),
                         Text(
                           task.location.toString() ?? '',
@@ -184,12 +184,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                   ),
                   onTap: () {
-                    int? differenceInDays = task.end_date?.difference(task.start_date ?? DateTime.now()).inDays;
-                    DateTime now = DateTime.now();
-                    DateTime dateWithMidnightTime = DateTime(now.year, now.month, now.day);
-                    int remainDay = task.end_date!.difference(dateWithMidnightTime).inDays < 0 ? 0: task.end_date!.difference(dateWithMidnightTime).inDays ;
-                    print(dateWithMidnightTime);
-                    _showBottomSheet(context, idx,differenceInDays,remainDay);
+                    //fixed task의 경우, 날짜를 정보를 따로 가지고 있지 않기 때문에, 날짜 계산부분은 0으로 처리
+                    _showBottomSheet(context, idx,0,0);
                   },
                 ),
               ],
@@ -252,8 +248,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   : TextDecoration.none,
                             ),
                           ),
-                          //width: MediaQuery.of(context).size.width - 93,
-                          constraints: kIsWeb? BoxConstraints(maxWidth: 400 -93): BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 93),
+                          constraints: kIsWeb? BoxConstraints(maxWidth: 400 -93, minWidth:400 -93): BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 93, minWidth: MediaQuery.of(context).size.width - 93),
                         ),
                         Text(
                           '~ ' + formatDateTime(task.end_date!).substring(0,11),
@@ -306,7 +301,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ),
         builder: (BuildContext bc){
           return Container(
-
             decoration: const BoxDecoration(
               color: Colors.white,// 모달 바텀 시트의 모서리를 둥글게 만듭니다.
               borderRadius: BorderRadius.only(
@@ -319,6 +313,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             width: MediaQuery.of(bc).size.width,
             child: Consumer<TaskViewModel>(
                 builder: (BuildContext context, TaskViewModel value, Widget? child) {
+                  bool isInFixedList = value.fixed_list.contains(value.tasks[idx].doc_id);
                   return Column(
                     children: [
                       SizedBox(height: 50,),
@@ -353,8 +348,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           SizedBox(width: 20,),
                           ElevatedButton(
                               onPressed: () {
-                                bool isInFixedList =
-                                value.fixed_list.contains(value.tasks[idx].doc_id);
 
                                 value.deleteTask(isInFixedList,
                                     value.selectedDay, value.tasks[idx].doc_id);
@@ -380,12 +373,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),),
 
-                      if(differenceInDays != null)
+                      if(!isInFixedList)
                         Text('D-' + remainDay.toString(), style: TextStyle(
                             fontSize: 100, color: AppColors.primary),),
 
 
-                      if(differenceInDays != null)
+                      if(!isInFixedList)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(35),
             child: AppBar(
+              scrolledUnderElevation: 0,
               backgroundColor: Colors.white,
               leading: Image.asset("assets/icons/grab_icon/grab_app_icon.png", height: 10,),
               actions: [

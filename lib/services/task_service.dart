@@ -23,7 +23,7 @@ class TaskService {
     // print(querySnapshot.docs.length);
     return querySnapshot.docs.map((doc){
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      print(data);
+      //print(data);
       return TaskModel(
         doc_id: data['doc_id'],
         is_fixed: data['is_fixed'],
@@ -296,8 +296,8 @@ class TaskService {
       }
     }
 
-    print(tasks);
-    print(extractWordsAndCount(tasks));
+    //print(tasks);
+    //print(extractWordsAndCount(tasks));
     if(tasks == ''){
       int month = DateTime.now().month;
       tasks = months[month-1];

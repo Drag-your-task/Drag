@@ -63,6 +63,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final taskViewModel = Provider.of<TaskViewModel>(context);
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.white,
         title: Text('Add new task \u{1F525}', style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,

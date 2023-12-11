@@ -22,7 +22,6 @@ class _WordCloudScreenState extends State<WordCloudScreen> {
   String _base64Image = '';
 
   Future<void> generateWordCloud(String text) async {
-    print('hhh');
     final response = await http.post(
       Uri.parse('https://stark-oasis-98237-ace4ec22c82d.herokuapp.com/generate_wordcloud'),
       headers: {'Content-Type': 'application/json'},
